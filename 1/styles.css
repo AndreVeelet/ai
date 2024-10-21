@@ -1,0 +1,156 @@
+h1 { color: peru;text-shadow: 1px 3px 3px  #111111;}
+h2 { color:wheat; text-shadow: 1px 2px 2px  #222222;}
+h3 { color: #222222 ; text-shadow: 1px 2px 3px  #222222; font-size: 1.5em;}
+label,p { color:#555555}
+body {
+    font-family: 'Calibri Light', Calibri, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: top; /* Центрируем содержимое по горизонтали */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    height: 100vh; /* Высота окна браузера */
+    margin: 0; /* Убираем отступы */
+    background-color: #333333; /* Цвет фона */
+    color: #ffffff;
+}
+.window {
+    display: none; /* Скрываем все окна по умолчанию */
+    border: 1px solid #ffffff; /* Рамка вокруг окон */
+    border-radius: 10px; /* Скругление углов рамки */
+    padding: 20px; /* Отступы внутри окон */
+    text-align: center; /* Центрируем текст внутри окон */
+    background-color: #bbbbbb; /* Цвет фона */
+    color: #000000;
+ /*   box-shadow: 0 10px 50px -30px rgb(0, 250, 200);*/
+    box-shadow: inset 0 3px 5px -1px rgb(0, 0, 0); 
+}
+.dekor {
+    border: 1px solid #777777; /* Рамка вокруг окон */
+    border-radius: 10px; /* Скругление углов рамки */
+    padding: 20px; /* Отступы внутри окон */
+    text-align: center; /* Центрируем текст внутри окон */
+    background-color: #f8f5f5; /* Цвет фона */
+    box-shadow: inset 0 3px 5px -1px rgb(0, 0, 0);
+}
+.custom-button {
+    background-color:chocolate; /* Зеленый фон */
+    color: white; /* Белый текст */
+    border: none; /* Рамка вокруг окон */
+    border-radius: 10px; /* Скругление углов рамки */
+    padding: 15px 30px; /* Отступы */
+    
+    font-size: 16px; /* Размер шрифта */
+    text-shadow: 1px 2px 3px brown;
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    transition: background-color 0.3s, transform 0.1s; /* Плавный переход для фона и трансформации */
+    margin-top: 20px; /* Отступ сверху */
+    margin-bottom: 20px; /* Отступ снизу */
+    box-shadow: 0 4px 15px chocolate;
+   /* transition: transform 0.3s ease, box-shadow 0.3s ease;*/
+    animation: shadow-pulse 4s infinite;
+}
+@keyframes shadow-pulse {
+    0% {box-shadow: 5px 10px 15px chocolate; transform: translate(0, 0);}
+    50% {box-shadow: 0 15px 15px rgb(253, 253, 253); /*transform: translate(-1px, -1px);*/}
+    100% {box-shadow: 5px 10px 15px chocolate; transform: translate(0, 0);}
+}
+
+/* Эффект при наведении */
+.custom-button:hover {
+    transform: scale(0.8);
+    background-color:rgba(210, 105, 30, 0.8); /* Темно-зеленый фон при наведении */
+}
+
+/* Эффект при нажатии */
+.custom-button:active {
+    transform: scale(0.8); /* Уменьшение размера кнопки при нажатии */
+    background-color:rgba(210, 105, 30, 0.8)
+} 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2em;
+} 
+#quiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрирование кнопок по горизонтали */
+    justify-content: center; /* Центрирование по вертикали */
+}     
+.active {
+    display: block; /* Показываем только активное окно */
+}
+#progressBar {
+    width: 100%; /* Ширина прогресс-бара */
+    background-color: white; /* Цвет фона прогресс-бара */
+}
+
+#progress {
+    height: 3px;
+    width: 0%;  /* Начальное значение */
+    background-color: orange;
+    transition: none;  /* Без анимации до начала функции */
+}
+
+.active {
+    display: block; /* Показываем только активное окно */
+}
+#wordDisplay {
+    font-size: 1.5em;
+    margin: 10px;
+    background-color: #f8f5f5;
+    color: #222222;
+    text-shadow: 2px 2px 3px gray;
+}
+.answer {
+    display: inline-block; /* Измените на inline-block для более гибкого управления */
+    margin: 10px 0; /* Добавьте отступы сверху и снизу для лучшего вида */
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color:bisque;
+    color:#333333;
+    text-align: center;
+    border: none;
+   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background-color 0.2s ease;*/
+} 
+.hidden {
+    display: none;
+}
+.correct {
+    color: green;
+    text-align: left;
+}
+.incorrect {
+    color: red;
+    text-align: left;
+}
+#backTowindow_settings {
+    display: block;
+    margin: 20px auto; /* Отцентрирует кнопку по горизонтали */
+    padding: 10px 20px;
+    background-color: chocolate;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+/* Отключаем темную тему, всегда используем светлую цветовую схему */
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: light;
+    }
+}
