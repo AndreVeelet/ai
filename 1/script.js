@@ -1,36 +1,20 @@
-/*const words = [
-    "яблоко", "банан", "груша", "замечательный апельсин", "киви",
-    "ананас", "персик", "слива", "вишня", "малина",
-    "клубника", "замечательный арбуз", "дыня", "замечательный лимон", "замечательный грейпфрут",
-    "черника", "ежевика", "манго", "папайя", "финик",
-    "кактус", "перец", "морковь", "брокколи", "цветная капуста",
-    "шпинат", "замечательный сельдерей", "лук", "чеснок", "имбирь",
-    "базилик"
-];
-*/
 let wakeLock = null; // Переменная для хранения блокировки экрана
 
 // Функция для запроса блокировки экрана
 async function requestWakeLock() {
     try {
         wakeLock = await navigator.wakeLock.request('screen');
-       // console.log('Wake Lock активирован');
-        updateGameState(); // Обновляем состояние при активации блокировки
 
         // Обновляем состояние каждые 5 секунд
         setInterval(null, 5000);
 
         // Освобождаем блокировку при закрытии вкладки
         window.addEventListener('unload', () => {
-            if (wakeLock) {
-                wakeLock.release();
-         //       console.log('Wake Lock освобожден');
-            }
+            if (wakeLock) { wakeLock.release(); }
         });
 
         // Слушаем событие освобождения блокировки
         wakeLock.addEventListener('release', () => {
-         //   console.log('Wake Lock освобожден автоматически');
             wakeLock = null; // Сбрасываем переменную
         });
 
@@ -39,8 +23,6 @@ async function requestWakeLock() {
     }
 }
 
-// Обработчик события кнопки
-//document.getElementById('toggleWakeLock').addEventListener('click', requestWakeLock);
 
 let words = [];
 

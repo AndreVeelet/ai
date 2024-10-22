@@ -6,7 +6,7 @@ body {
     font-family: 'Calibri Light', Calibri, sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: top; /* Центрируем содержимое по горизонтали */
+    justify-content: flex-start; /* Центрируем содержимое по горизонтали */
     align-items: center; /* Центрируем содержимое по вертикали */
     height: 100vh; /* Высота окна браузера */
     margin: 0; /* Убираем отступы */

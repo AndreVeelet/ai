@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css"/>
-    <title>Программа с Окнами</title>
+    <title>Тренировка памяти</title>
 </head>
 <body>
     <div id="overlay">Приготовьтесь...</div>
@@ -18,10 +18,10 @@
             <p></p>
             <label for="wordCount">Количество слов (10):</label>
             
-            <input type="range" id="wordCount" min="5" max="50" value="10" style="height: 3px; width: 200px;" oninput="updateWordCount(this.value)">
+            <input type="range" id="wordCount" min="5" max="50" value="10" style="height: 15px; width: 200px;" oninput="updateWordCount(this.value)">
             <p></p>
             <label for="timeLimit">Время на запоминание (10 сек):</label>
-            <input type="range" id="timeLimit" min="5" max="20" value="10" style="height: 3px; width: 200px;" oninput="updateTimeLimit(this.value)">
+            <input type="range" id="timeLimit" min="5" max="20" value="10" style="height: 15px; width: 200px;" oninput="updateTimeLimit(this.value)">
         
         </div>
         <button class="custom-button" id="towindow_game">Играть</button>        
