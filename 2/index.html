@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица Шульте</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            gap: 1px;
+            margin: 20px auto;
+            justify-content: center;
+        }
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+	    color: #222;
+            background-color: #f0f0f0;
+            border: 1px solid #555;
+	    border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .disabled {
+            pointer-events: none;
+            transform: scale(0);
+            opacity: 0;
+        }
+        .timer, .best-time {
+            font-size: 24px;
+            margin: 20px;
+        }
+        select, button {
+            font-size: 18px;
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Таблица Шульте</h1>
+
+    <div>
+        <label for="grid-size">Выберите размер таблицы: </label>
+        <select id="grid-size">
+            <option value="4">4x4</option>
+            <option value="5" selected>5x5</option>
+            <option value="6">6x6</option>
+            <option value="7">7x7</option>
+        </select>
+        <button id="start-btn">Начать игру</button>
+    </div>
+
+    <div class="timer">Время: <span id="time">0.0</span> секунд</div>
+    <div class="best-time">Лучшее время: <span id="best-time">—</span></div>
+
+    <div class="grid" id="grid">
+        <!-- Клетки таблицы будут генерироваться здесь -->
+    </div>
+
+    <script>
+        let gridSize = 5; // Начальный размер таблицы
+        let numbers = [];
+        let currentNumber = 1; // С какого числа начинать
+        let startTime;
+        let timerInterval;
+        let bestTime = null;
+
+        const gridElement = document.getElementById('grid');
+        const timeElement = document.getElementById('time');
+        const bestTimeElement = document.getElementById('best-time');
+        const gridSizeElement = document.getElementById('grid-size');
+
+        // Функция для генерации случайного светлого цвета
+        function getRandomLightColor() {
+            const r = Math.floor(Math.random() * 156) + 100; // от 100 до 255 (чтобы цвета были светлыми)
+            const g = Math.floor(Math.random() * 156) + 100;
+            const b = Math.floor(Math.random() * 156) + 100;
+            return `rgb(${r},${g},${b})`;
+        }
+
+        // Функция для генерации случайного порядка чисел
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Генерация таблицы
+        function generateGrid() {
+            numbers = Array.from({ length: gridSize * gridSize }, (_, i) => i + 1); // Числа от 1 до N
+            shuffle(numbers); // Перемешиваем числа
+
+            gridElement.innerHTML = ''; // Очищаем таблицу
+            gridElement.style.gridTemplateColumns = `repeat(${gridSize}, 100px)`; // Настраиваем сетку
+            gridElement.style.gridTemplateRows = `repeat(${gridSize}, 100px)`;
+
+            numbers.forEach(number => {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.textContent = number;
+                cell.style.backgroundColor = getRandomLightColor(); // Задаем светлый цвет
+                cell.addEventListener('click', () => handleCellClick(number, cell));
+                gridElement.appendChild(cell);
+            });
+        }
+
+        // Обработка клика на клетку
+        function handleCellClick(number, cell) {
+            if (number === currentNumber) {
+                cell.classList.add('disabled'); // Применяем эффект исчезновения
+                currentNumber++;
+
+                if (currentNumber > gridSize * gridSize) {
+                    endGame(); // Если все числа найдены
+                }
+            }
+        }
+
+        // Старт игры
+        function startGame() {
+            currentNumber = 1; // Сбросить начальное число
+            startTime = new Date();
+            timerInterval = setInterval(updateTimer, 100); // Обновляем таймер каждые 100мс
+            generateGrid(); // Генерируем таблицу
+        }
+
+        // Обновление таймера
+        function updateTimer() {
+            const currentTime = new Date();
+            const elapsed = (currentTime - startTime) / 1000;
+            timeElement.textContent = elapsed.toFixed(1);
+        }
+
+        // Окончание игры
+        function endGame() {
+            clearInterval(timerInterval); // Останавливаем таймер
+
+            const currentTime = parseFloat(timeElement.textContent);
+            const bestTimeKey = `bestTime_${gridSize}x${gridSize}`;
+
+            // Проверяем, есть ли лучшее время в localStorage
+            const storedBestTime = localStorage.getItem(bestTimeKey);
+            if (!storedBestTime || currentTime < parseFloat(storedBestTime)) {
+                localStorage.setItem(bestTimeKey, currentTime);
+                bestTime = currentTime;
+                alert(`Новый рекорд! Вы нашли все числа за ${currentTime.toFixed(1)} секунд.`);
+            } else {
+                alert(`Игра окончена! Вы нашли все числа за ${currentTime.toFixed(1)} секунд.`);
+            }
+
+            loadBestTime(); // Загружаем лучшее время
+        }
+
+        // Загрузка лучшего времени из localStorage
+        function loadBestTime() {
+            const bestTimeKey = `bestTime_${gridSize}x${gridSize}`;
+            const storedBestTime = localStorage.getItem(bestTimeKey);
+
+            if (storedBestTime) {
+                bestTime = parseFloat(storedBestTime);
+                bestTimeElement.textContent = `${bestTime.toFixed(1)} секунд`;
+            } else {
+                bestTimeElement.textContent = '—';
+            }
+        }
+
+        // Обработчик для кнопки "Начать игру"
+        document.getElementById('start-btn').addEventListener('click', () => {
+            gridSize = parseInt(gridSizeElement.value); // Получаем выбранный размер
+            startGame();
+            loadBestTime(); // Загружаем лучшее время для выбранного размера
+        });
+
+        // Запускаем игру при загрузке страницы
+        window.onload = () => {
+            loadBestTime(); // Загружаем лучшее время при загрузке страницы
+        };
+    </script>
+
+</body>
+</html>
