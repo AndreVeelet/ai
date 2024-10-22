@@ -182,7 +182,7 @@ function endGame() {
     timerInterval = null; // Обнуляем переменную, чтобы не обновлять таймер дальше
     // Сохраняем текущее значение elapsed для использования при перезапуске
     elapsed += (new Date() - startTime) / 1000; // Добавляем к elapsed прошедшее время
-    time_Elasted.textContent = "Ваше время: " + elapsed.toFixed(1) + " секунд";
+    time_Elasted.textContent = elapsed.toFixed(1) + " секунд";
     elapsed = 0;
     const currentTime = parseFloat(timeElement.textContent);
     const bestTimeKey = `bestTime_${gridSize}x${gridSize}`;
