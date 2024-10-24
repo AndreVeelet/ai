@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Шаблон игры</title>
+</head>
+<body>
+    <div id="overlay">Загрузка<span class="dots"></span></div>
+    
+    <h1 style="text-align: center;">Название игры</h1>
+    
+    <!-- окно настроек -->
+    <div id="window_settings" class="window active" style="width: 300px; height: auto;">
+        <h2>Настройки</h2>
+        <div class="dekor"> 
+            <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+            <p></p>
+            <label for="grid-size">Список: </label>
+            <select id="grid-size">
+                <option value="4">1 элемент</option>
+                <option value="5" selected>2 элемент</option>
+                <option value="6">3 элемент</option>
+                <option value="7">4 элемент</option>
+            </select>
+            <p></p>
+            <p></p>
+        </div>
+        <button class="custom-button" id="towindow_game">Играть</button>        
+	        
+    </div>
+
+    <!-- Второе окно -->
+    <div id="window_game" class="window" style="width: 340px; height: auto;">
+        <h2>Небольшая инструкция <br>что делать</h2>
+        <p></p>
+        <div class="timer">Время: <span id="time">0.0</span> секунд</div>
+        <p></p>
+
+        <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
+            <div id="progress"></div>
+        </div>
+        
+        <div class="grid" id="grid">
+            <!-- Клетки таблицы будут генерироваться здесь -->
+        </div>
+        
+
+    </div>
+
+    <!-- Третье окно -->
+    <div id="window_result" class="window" style="width: 300px; height: auto;">
+        <h2>Результаты</h2>
+	<p></p>
+        <div class="timer"><b>Время:</b><br><span id="time_elasted">—</span></div>
+        <div class="best-time"><b>Лучшее время:</b><br><span id="best-time">—</span></div>
+        
+        <p></p>
+        <button id="backTowindow_settings">Назад</button>
+    </div>
+   
+    <script src="script.js"></script>
+</body>
+</html>
