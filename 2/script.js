@@ -180,13 +180,11 @@ function endGame() {
 
     clearInterval(timerInterval); // Останавливаем таймер
     timerInterval = null; // Обнуляем переменную, чтобы не обновлять таймер дальше
-    // Сохраняем текущее значение elapsed для использования при перезапуске
-    elapsed += (new Date() - startTime) / 1000; // Добавляем к elapsed прошедшее время
-    time_Elasted.textContent = elapsed.toFixed(1) + " секунд";
+   
     elapsed = 0;
     const currentTime = parseFloat(timeElement.textContent);
     const bestTimeKey = `bestTime_${gridSize}x${gridSize}`;
-
+    time_Elasted.textContent = timeElement.textContent + " секунд";
     // Проверяем, есть ли лучшее время в localStorage
     const storedBestTime = localStorage.getItem(bestTimeKey);
     if (!storedBestTime || currentTime < parseFloat(storedBestTime)) {
