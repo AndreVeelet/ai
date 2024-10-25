@@ -36,29 +36,31 @@
     const rotateButton = document.getElementById('rotateButton');
     let isLandscape = false; // Состояние ориентации
 
-    rotateButton.addEventListener('click', () => {
-        if (screen.orientation) {
-            if (isLandscape) {
-                // Повернуть в портретный режим
-                screen.orientation.lock("portrait").then(() => {
-                    console.log("Ориентация заблокирована на портретный режим.");
-                }).catch(err => {
-                    console.error("Не удалось заблокировать ориентацию:", err);
-                    alert("Ошибка при смене ориентации на портретный режим.");
-                });
-                isLandscape = false; // Обновить состояние
-            } else {
-                // Повернуть в альбомный режим
-                screen.orientation.lock("landscape").then(() => {
-                    console.log("Ориентация заблокирована на альбомный режим.");
-                }).catch(err => {
-                    console.error("Не удалось заблокировать ориентацию:", err);
-                    alert("Ошибка при смене ориентации на альбомный режим.");
-                });
-                isLandscape = true; // Обновить состояние
+    rotateButton.addEventListener('click', async () => {
+        try {
+            // Переводим в полноэкранный режим
+            if (!document.fullscreenElement) {
+                await document.documentElement.requestFullscreen();
+                console.log("Переведен в полноэкранный режим.");
             }
-        } else {
-            alert("Ваш браузер не поддерживает изменение ориентации экрана.");
+
+            if (screen.orientation) {
+                if (isLandscape) {
+                    // Повернуть в портретный режим
+                    await screen.orientation.lock("portrait");
+                    console.log("Ориентация заблокирована на портретный режим.");
+                } else {
+                    // Повернуть в альбомный режим
+                    await screen.orientation.lock("landscape");
+                    console.log("Ориентация заблокирована на альбомный режим.");
+                }
+                isLandscape = !isLandscape; // Обновить состояние
+            } else {
+                alert("Ваш браузер не поддерживает изменение ориентации экрана.");
+            }
+        } catch (err) {
+            console.error("Ошибка при смене ориентации:", err);
+            alert("Ошибка при смене ориентации.");
         }
     });
 </script>
