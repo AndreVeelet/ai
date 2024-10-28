@@ -67,15 +67,15 @@ function moveRight() {
 }
 
 function moveUp() {
-    board = rotateRight(board);
-    moveLeft();
     board = rotateLeft(board);
+    moveLeft();
+    board = rotateRight(board);   
 }
 
 function moveDown() {
-    board = rotateLeft(board);
-    moveLeft();
     board = rotateRight(board);
+    moveLeft();
+    board = rotateLeft(board);
 }
 
 function rotateLeft(matrix) {
