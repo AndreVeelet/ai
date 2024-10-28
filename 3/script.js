@@ -1,3 +1,27 @@
+
+// Функция для перехода в полноэкранный режим
+function enterFullScreen() {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+    }
+}
+
+// Запускаем fullscreen при первом касании экрана
+function initFullScreenOnFirstTouch() {
+    document.addEventListener('touchstart', function onFirstTouch() {
+        enterFullScreen();
+        document.removeEventListener('touchstart', onFirstTouch);
+    });
+}
+
+// Вызываем функцию при загрузке страницы
+initFullScreenOnFirstTouch();
+
+
 const boardSize = 4;
 let board = [];
 
