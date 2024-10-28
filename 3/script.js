@@ -1,3 +1,6 @@
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
 
 // Функция для перехода в полноэкранный режим
 function enterFullScreen() {
