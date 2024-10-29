@@ -1,3 +1,8 @@
+// Функция для прекращения действия по умолчанию
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
 let wakeLock = null; // Переменная для хранения блокировки экрана
 
 // Функция для запроса блокировки экрана
@@ -102,7 +107,7 @@ const gridSizeElement = document.getElementById('grid-size');
 
 // Старт игры
 
-let timeLimit = 10;
+let timeLimit = 5;
 
 function startGame() {
     window_game.classList.add('active');
