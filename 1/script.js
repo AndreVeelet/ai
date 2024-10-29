@@ -1,3 +1,8 @@
+// Функция для прекращения действия по умолчанию
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
 let wakeLock = null; // Переменная для хранения блокировки экрана
 
 // Функция для запроса блокировки экрана
