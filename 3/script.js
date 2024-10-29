@@ -1,29 +1,20 @@
+// Функция для прекращения действия по умолчанию
 document.addEventListener('touchmove', function(e) {
     e.preventDefault();
 }, { passive: false });
 
-// Функция для перехода в полноэкранный режим
-function enterFullScreen() {
-    if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen();
-    }
+
+var style = document.createElement('style');
+style.innerHTML = `
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('font2048.ttf') format('truetype');
 }
+`;
+document.head.appendChild(style);
 
-// Запускаем fullscreen при первом касании экрана
-function initFullScreenOnFirstTouch() {
-    document.addEventListener('touchstart', function onFirstTouch() {
-        enterFullScreen();
-        document.removeEventListener('touchstart', onFirstTouch);
-    });
-}
-
-// Вызываем функцию при загрузке страницы
-initFullScreenOnFirstTouch();
-
+// Применение шрифта
+document.getElementById('game-board').style.fontFamily = 'MyCustomFont';
 
 const boardSize = 4;
 let board = [];
@@ -60,7 +51,7 @@ function addNewTile() {
     });
     if (emptyTiles.length) {
         const { rIndex, cIndex } = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-        board[rIndex][cIndex] = Math.random() > 0.1 ? 2 : 4;
+        board[rIndex][cIndex] = Math.random() > 0.2 ? 2 : 4;
     }
 }
 

@@ -8,24 +8,24 @@ body, html {
 }
 
 #game-board {
-    width: 380px; /* 4 плитки по 90px и 3 промежутка по 10px */
-    height: 380px;
+    width: 370px; /* 4 плитки по 90px и 3 промежутка по 10px */
+    height: 360px;
     display: grid;
-    grid-template-columns: repeat(4, 90px);
-    gap: 10px;
-    padding: 10px;
+    grid-template-columns: repeat(4, 90px); /* 4 плитки по 90px и 3 промежутка по 10px */
+    gap: 1px; /* Расстояние между плитками */
+    padding: 1px; /* Поля вокруг плиток */
     box-sizing: border-box;
-    background-color: #bbada0;
+    /*background-color: #bbada0;*/
     border-radius: 10px;
 }
 
 .tile {
-    width: 90px;
-    height: 90px;
+    width: 85px;
+    height: 85px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 30px;
     color: #fff;
     background-color: #ccc;
     border-radius: 5px;
