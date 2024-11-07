@@ -52,6 +52,9 @@ function addNewTile() {
     if (emptyTiles.length) {
         const { rIndex, cIndex } = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
         board[rIndex][cIndex] = Math.random() > 0.2 ? 2 : 4;
+    } else  {
+        alert('Игра окончена!');
+        
     }
 }
 
@@ -127,13 +130,14 @@ function handleTouchEnd(event) {
     const touch = event.changedTouches[0];
     const deltaX = touch.clientX - startX;
     const deltaY = touch.clientY - startY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0) move('right');
-        else move('left');
-    } else {
-        if (deltaY > 0) move('down');
-        else move('up');
+    if ((Math.abs(deltaX) > 20) || (Math.abs(deltaY) > 20)) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 0) move('right');
+            else move('left');
+        } else {
+            if (deltaY > 0) move('down');
+            else move('up');
+        }
     }
 }
 
