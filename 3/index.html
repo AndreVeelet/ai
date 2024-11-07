@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048 Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Игра 2048</title>
 </head>
 <body>
-    <h1>Игра 2048</h1>
-    <div id="game-board"></div>
+    <div id="overlay">Загрузка<span class="dots"></span></div>
+    
+    <h1 style="text-align: center;">Игра 2048</h1>
+    
+    <!-- окно настроек -->
+    <div id="window_settings" class="window active" style="width: 300px; height: auto;">
+        <h2>Настройки</h2>
+        <div class="dekor"> 
+            <p></p>
+            <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+            <p></p>
+        </div>
+        <button class="custom-button" id="towindow_game">Играть</button>        
+	        
+    </div>
+
+    <!-- Второе окно -->
+    <div id="window_game" class="window" style="width: 360px; height: 500px;">
+        <h2><br></h2>
+        <div id="score" style="font-size: 24px; margin-bottom: 10px;">Счет: 0</div>
+        <p></p>
+        
+        <p></p>
+    
+        <div id="game-board" class="game-board"></div>
+       
+        
+
+    </div>
+
+    <!-- Третье окно -->
+    <div id="window_result" class="window" style="width: 300px; height: auto;">
+        <h2>Результаты</h2>
+	<p></p>
+        <div id="score2" style="font-size: 24px; margin-bottom: 10px;">Счет: 0</div>
+        <div class="best-score"><b>Лучший счет:</b><br><span id="best-score"></span></div>
+        
+        <p></p>
+        <button id="backTowindow_settings">Назад</button>
+    </div>
+   
     <script src="script.js"></script>
 </body>
 </html>

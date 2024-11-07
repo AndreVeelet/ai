@@ -1,7 +1,123 @@
+let isWindowActive = false; // Переменная для отслеживания состояния окна
 // Функция для прекращения действия по умолчанию
 document.addEventListener('touchmove', function(e) {
-    e.preventDefault();
+    if (isWindowActive) {
+        e.preventDefault(); // Предотвращаем прокрутку, если окно активно
+    }
 }, { passive: false });
+
+let wakeLock = null; // Переменная для хранения блокировки экрана
+
+// Функция для запроса блокировки экрана
+async function requestWakeLock() {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+
+        // Обновляем состояние каждые 5 секунд
+        setInterval(null, 5000);
+
+        // Освобождаем блокировку при закрытии вкладки
+        window.addEventListener('unload', () => {
+            if (wakeLock) { wakeLock.release(); }
+        });
+
+        // Слушаем событие освобождения блокировки
+        wakeLock.addEventListener('release', () => {
+            wakeLock = null; // Сбрасываем переменную
+        });
+
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+// Обработчик изменения состояния чекбокса
+const checkbox = document.getElementById('fullscreenCheckbox');
+checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+        // Включаем полноэкранный режим
+        document.documentElement.requestFullscreen()
+            .catch(err => {
+                console.error(`Ошибка при попытке включить полноэкранный режим: ${err.message}`);
+                checkbox.checked = false; // Сбрасываем чекбокс в случае ошибки
+            });
+    } else {
+        // Выходим из полноэкранного режима
+        document.exitFullscreen()
+            .catch(err => {
+                console.error(`Ошибка при попытке выйти из полноэкранного режима: ${err.message}`);
+            });
+    }
+});
+
+// Получаем элементы окон и кнопок
+const window_settings = document.getElementById('window_settings');
+const window_game = document.getElementById('window_game');
+const window_result = document.getElementById('window_result');
+
+const towindow_gameButton = document.getElementById('towindow_game');
+const backTowindow_settingsButton = document.getElementById('backTowindow_settings');
+
+// Функция для скрытия всех окон
+function hideAllWindows() {
+    window_settings.classList.remove('active');
+    window_game.classList.remove('active');
+    window_result.classList.remove('active');
+}
+
+// Переход к окну 2
+towindow_gameButton.addEventListener('click', () => {
+    hideAllWindows(); // Скрываем все окна
+    
+    overlay.style.display = 'flex'; // Показываем overlay
+        // Скрываем через 5 секунд
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            window_game.classList.add('active'); // Показываем окно 2
+            requestWakeLock();
+	isWindowActive = true;
+//Старт игры
+		
+            startGame();
+
+        }, 1000);
+    loadBestScore(); // Загружаем лучшее время для выбранного размера
+});
+
+// Переход обратно к окну 1
+backTowindow_settingsButton.addEventListener('click', () => {
+    hideAllWindows(); // Скрываем все окна
+    isWindowActive = false;
+    window_settings.classList.add('active'); // Показываем окно 1
+});
+
+//ИГРА
+
+let bestScore = null;
+
+const scoreElement = document.getElementById('score');
+const bestScoreElement = document.getElementById('best-score');
+
+
+// Старт игры
+
+
+let score = 0; // Переменная для хранения текущего счета
+
+function startGame() {
+    window_game.classList.add('active');
+    score = 0;
+    document.getElementById('score').textContent = `Счет: ${score}`;
+    createBoard();
+    
+    
+}    
+
+
+function updateScore(value) {
+    score += value; // Увеличиваем счет на значение плитки
+    document.getElementById('score').textContent = `Счет: ${score}`; // Обновляем отображение счета
+}
 
 
 var style = document.createElement('style');
@@ -52,10 +168,22 @@ function addNewTile() {
     if (emptyTiles.length) {
         const { rIndex, cIndex } = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
         board[rIndex][cIndex] = Math.random() > 0.2 ? 2 : 4;
-    } else  {
-        alert('Игра окончена!');
+    } else if (!canMove()) {
+        endGame(); // Игра окончена   
         
     }
+}
+
+function canMove() {
+    for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+            if (board[row][col] === 0) return true; // Есть пустая клетка
+            // Проверяем соседние плитки
+            if (col < boardSize - 1 && board[row][col] === board[row][col + 1]) return true; // Вправо
+            if (row < boardSize - 1 && board[row][col] === board[row + 1][col]) return true; // Вниз
+        }
+    }
+    return false; // Ходов больше нет
 }
 
 function move(direction) {
@@ -74,6 +202,7 @@ function moveLeft() {
         for (let i = 0; i < filteredRow.length - 1; i++) {
             if (filteredRow[i] === filteredRow[i + 1]) {
                 filteredRow[i] *= 2;
+                updateScore(filteredRow[i]); // Обновляем счет при слиянии
                 filteredRow.splice(i + 1, 1);
             }
         }
@@ -114,9 +243,6 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') move('right');
 });
 
-createBoard();
-
-
 
 let startX, startY;
 
@@ -144,3 +270,51 @@ function handleTouchEnd(event) {
 // Добавляем слушатели для touch событий
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchend', handleTouchEnd, false);
+
+
+
+// Окончание игры
+const bestScoreKey = `bestScore`;
+function endGame() {
+    
+    hideAllWindows(); // Скрываем все окна
+    window_result.classList.add('active'); // Показываем окно 3
+    document.getElementById('score2').textContent = `Счет: ${score}`;
+    const scoreElement = document.getElementById('score');
+  //  const currentScore = parseFloat(scoreElement.textContent);
+    
+    
+    // Проверяем, есть ли лучшее время в localStorage
+    const storedBestScore = localStorage.getItem(bestScoreKey);
+    if (!storedBestScore || score > parseFloat(storedBestScore)) {
+        localStorage.setItem(bestScoreKey, score);
+      //        alert(`Сохраняем лучший счет: ${score}.`);
+    } 
+
+    loadBestScore(); // Загружаем лучшее время
+}
+
+// Загрузка лучшего времени из localStorage
+function loadBestScore() {
+   
+    const storedBestScore = localStorage.getItem(bestScoreKey);
+    
+    if (storedBestScore) {
+        bestScore = parseFloat(storedBestScore);
+        bestScoreElement.textContent = `${bestScore}`;
+        
+    } else {
+        bestScoreElement.textContent = '—';
+      //  alert(`Сохраненный лучший счет: —.`);
+    }
+}
+
+
+// Запускаем игру при загрузке страницы
+window.onload = () => {
+    
+    loadBestScore(); // Загружаем лучшее время при загрузке страницы
+    
+};
+
+
