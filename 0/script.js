@@ -1,6 +1,9 @@
+let isWindowActive = false; // Переменная для отслеживания состояния окна
 // Функция для прекращения действия по умолчанию
 document.addEventListener('touchmove', function(e) {
-    e.preventDefault();
+    if (isWindowActive) {
+        e.preventDefault(); // Предотвращаем прокрутку, если окно активно
+    }
 }, { passive: false });
 
 let wakeLock = null; // Переменная для хранения блокировки экрана
@@ -72,7 +75,9 @@ towindow_gameButton.addEventListener('click', () => {
             overlay.style.display = 'none';
             window_game.classList.add('active'); // Показываем окно 2
             requestWakeLock();
+	isWindowActive = true;
 //Старт игры
+		
             startGame();
 
         }, 2000);
@@ -85,6 +90,7 @@ towindow_gameButton.addEventListener('click', () => {
 // Переход обратно к окну 1
 backTowindow_settingsButton.addEventListener('click', () => {
     hideAllWindows(); // Скрываем все окна
+    isWindowActive = false;
     window_settings.classList.add('active'); // Показываем окно 1
 });
 
