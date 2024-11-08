@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Игра Пятнашки</title>
+</head>
+<body>
+    <div id="overlay">Загрузка<span class="dots"></span></div>
+    
+    <h1 style="text-align: center;">Игра Пятнашки</h1>
+    
+    <!-- окно настроек -->
+    <div id="window_settings" class="window active" style="width: 300px; height: auto;">
+        <h2>Настройки</h2>
+        <div class="dekor"> 
+            
+            <p></p><label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+            <p></p>
+        </div>
+        <button class="custom-button" id="towindow_game">Играть</button>        
+	        
+    </div>
+
+    <!-- Второе окно -->
+    <div id="window_game" class="window" style="width: 340px; height: auto;">
+        <h2>Собери Пятнашки <br>в правильном порядке</h2>
+        <p></p>
+        <div class="timer">Время: <span id="time">0.0</span> секунд</div>
+        <p></p>
+
+        <div class="game-container" id="game-container"></div>      
+
+    </div>
+
+    <!-- Третье окно -->
+    <div id="window_result" class="window" style="width: 300px; height: auto;">
+        <h2>Пятнышки собраны!</h2>
+	<p></p>
+        <div class="timer"><b>Время:</b><br><span id="time_elasted">—</span></div>
+        <div class="best-time"><b>Лучшее время:</b><br><span id="best-time">—</span></div>
+        
+        <p></p>
+        <button id="backTowindow_settings">Назад</button>
+    </div>
+   
+    <script src="script.js"></script>
+</body>
+</html>
