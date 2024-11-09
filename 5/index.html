@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"> <!-- Устанавливаем кодировку документа -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Настраиваем адаптивность страницы для мобильных устройств -->
+    <title>Случайные картинки в сетке</title> <!-- Заголовок страницы -->
+    <style>
+        body {
+            display: flex; /* Используем flexbox для центрирования содержимого */
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+            height: 100vh; /* Высота экрана */
+            background-color: #f0f0f0; /* Цвет фона страницы */
+        }
+        .grid {
+            display: grid; /* Используем CSS Grid для создания сетки */
+            grid-template-columns: repeat(6, 64px); /* 6 столбцов по 64 пикселя */
+            grid-template-rows: repeat(8, 64px); /* 8 рядов по 64 пикселя */
+            gap: 5px; /* Промежутки между ячейками */
+        }
+        .cell {
+            width: 64px; /* Ширина ячейки */
+            height: 64px; /* Высота ячейки */
+            background-color: white; /* Цвет фона ячейки */
+            border: 1px solid #ccc; /* Граница ячейки */
+            position: relative; /* Для абсолютного позиционирования изображения внутри ячейки */
+        }
+        .image {
+            width: 100%; /* Ширина изображения равна ширине ячейки */
+            height: 100%; /* Высота изображения равна высоте ячейки */
+            background-image: url('collect.png'); /* Фоновое изображение из файла collect.png */
+            background-size: 512px 512px; /* Размер оригинального изображения */
+            position: absolute; /* Абсолютное позиционирование для изображения внутри ячейки */
+            top: 0; /* Позиция сверху */
+            left: 0; /* Позиция слева */
+            display: none; /* Скрываем изображение по умолчанию */
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid" id="grid"></div> <!-- Контейнер для сетки -->
+
+<script>
+    const totalImages = 64; // Общее количество изображений в collect.png
+    const originalSize = 512; // Размер оригинального изображения
+    const gridRows = 8; // Количество рядов в сетке
+    const gridCols = 6; // Количество столбцов в сетке
+    let currentImageIndex; // Переменная для хранения индекса текущего изображения
+
+    function createGrid() {
+        const grid = document.getElementById('grid'); // Получаем элемент сетки по ID
+        
+        for (let i = 0; i < gridRows * gridCols; i++) { // Создаем ячейки для всей сетки
+            const cell = document.createElement('div'); // Создаем элемент div для ячейки
+            cell.classList.add('cell'); // Добавляем класс cell
+            
+            const imageDiv = document.createElement('div'); // Создаем элемент div для изображения
+            imageDiv.classList.add('image'); // Добавляем класс image
+            
+            // Добавляем обработчик клика для каждой ячейки
+            imageDiv.onclick = () => handleImageClick(imageDiv); // При клике вызываем функцию handleImageClick
+
+            cell.appendChild(imageDiv); // Вкладываем изображение в ячейку
+            grid.appendChild(cell); // Вкладываем ячейку в сетку
+        }
+    }
+
+    function showRandomImage() {
+        currentImageIndex = Math.floor(Math.random() * totalImages); // Выбираем случайный индекс изображения
+        const x = (currentImageIndex % 8) * (originalSize / 8); // Координаты X для фона изображения
+        const y = Math.floor(currentImageIndex / 8) * (originalSize / 8); // Координаты Y для фона изображения
+
+        const randomCellIndex = Math.floor(Math.random() * (gridRows * gridCols)); // Выбираем случайную ячейку в сетке
+        const randomCell = document.querySelectorAll('.cell')[randomCellIndex]; // Получаем случайную ячейку
+
+        const imageDiv = randomCell.querySelector('.image'); // Получаем элемент изображения из выбранной ячейки
+        imageDiv.style.backgroundPosition = `-${x}px -${y}px`; // Устанавливаем позицию фона для изображения
+        imageDiv.style.display = 'block'; // Показываем изображение
+    }
+
+    function handleImageClick(imageDiv) {
+        imageDiv.style.display = 'none'; // Скрываем текущее изображение на полсекунды
+
+        setTimeout(() => { // Через полсекунды выполняем следующие действия
+            showRandomImage(); // Показываем новое случайное изображение
+            showCurrentImage(imageDiv); // Показываем текущее изображение на новой позиции
+        }, 500);
+    }
+
+    function showCurrentImage(imageDiv) {
+        const x = (currentImageIndex % 8) * (originalSize / 8); // Координаты X для текущего изображения
+        const y = Math.floor(currentImageIndex / 8) * (originalSize / 8); // Координаты Y для текущего изображения
+
+        let newCellIndex;
+        do {
+            newCellIndex = Math.floor(Math.random() * (gridRows * gridCols)); // Выбираем новую случайную ячейку
+        } while (newCellIndex === Array.from(document.querySelectorAll('.cell')).indexOf(imageDiv.parentNode)); // Убедимся, что это не та же ячейка
+
+        const newCell = document.querySelectorAll('.cell')[newCellIndex]; // Получаем новую случайную ячейку
+        
+        const newImageDiv = newCell.querySelector('.image'); // Получаем элемент изображения из новой ячейки
+        newImageDiv.style.backgroundPosition = `-${x}px -${y}px`; // Устанавливаем позицию фона для новой ячейки
+        newImageDiv.style.display = 'block'; // Показываем текущее изображение в новой клетке
+    }
+
+    window.onload = () => { // При загрузке страницы выполняем следующие действия
+        createGrid(); // Создаем сетку
+        showRandomImage(); // Показываем одно случайное изображение при загрузке страницы
+    };
+</script>
+
+</body>
+</html>
