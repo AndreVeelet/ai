@@ -211,17 +211,16 @@ const totalImages = 64;       // Всего доступных картинок
                 showImages(); // Показываем новые изображения
                 isWaiting = false;
                 showMessage(`Нажми на новую картинку`);
-            }, 1000);
+            }, 1500);
         } else {
             isWaiting = true;
-            showMessage("Неверно! Попробуйте снова.");
+            showMessage(`Неверно! Попробуйте снова.`);
             setTimeout(() => {
-                
-                
-                showImages(); // Показываем те же изображения снова
+                               
+               showImages(); // Показываем те же изображения снова
                isWaiting = false;
                showMessage(`Нажми на новую картинку`);
-            }, 1000);
+            }, 2500);
         }
     }
 

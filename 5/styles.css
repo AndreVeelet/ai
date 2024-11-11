@@ -17,7 +17,7 @@ body {
     display: none; /* Скрываем все окна по умолчанию */
     border: 1px solid #ffffff; /* Рамка вокруг окон */
     border-radius: 10px; /* Скругление углов рамки */
-    padding: 10px; /* Отступы внутри окон */
+    padding: 5px; /* Отступы внутри окон */
     text-align: center; /* Центрируем текст внутри окон */
     background-color: #bbbbbb; /* Цвет фона */
     color: #000000;
