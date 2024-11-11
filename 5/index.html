@@ -48,126 +48,118 @@
 <div class="message" id="message"></div> <!-- Контейнер для сообщений -->
 
 <script>
-    const totalImages = 64; // Общее количество изображений в collect.png
-    const originalSize = 512; // Размер оригинального изображения
-    const gridRows = 8; // Количество рядов в сетке
-    const gridCols = 6; // Количество столбцов в сетке
-    let currentImageIndices = []; // Массив для хранения индексов текущих изображений
-    let isWaiting = false; // Флаг ожидания для предотвращения повторных кликов
-    let imagesToShow = 1; // Количество изображений для отображения
+    const totalImages = 64;       // Всего доступных картинок
+    const originalSize = 512;     // Размер оригинального изображения
+    const gridRows = 8;           // Количество строк сетки
+    const gridCols = 6;           // Количество столбцов сетки
+    let imageIndices = [];        // Массив для хранения случайных уникальных индексов изображений
+    let imagesToShow = 1;         // Количество отображаемых изображений (начинаем с 1)
+    let isWaiting = false;        // Флаг ожидания для предотвращения повторных кликов
 
     function createGrid() {
-        const grid = document.getElementById('grid'); // Получаем элемент сетки по ID
+        const grid = document.getElementById('grid');
         
-        for (let i = 0; i < gridRows * gridCols; i++) { // Создаем ячейки для всей сетки
-            const cell = document.createElement('div'); // Создаем элемент div для ячейки
-            cell.classList.add('cell'); // Добавляем класс cell
+        for (let i = 0; i < gridRows * gridCols; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
             
-            const imageDiv = document.createElement('div'); // Создаем элемент div для изображения
-            imageDiv.classList.add('image'); // Добавляем класс image
+            const imageDiv = document.createElement('div');
+            imageDiv.classList.add('image');
             
-            // Добавляем обработчик клика для каждой ячейки
-            imageDiv.onclick = () => handleImageClick(imageDiv); // При клике вызываем функцию handleImageClick
+            imageDiv.onclick = () => handleImageClick(imageDiv);  // Передаем элемент изображения в обработчик клика
 
-            cell.appendChild(imageDiv); // Вкладываем изображение в ячейку
-            grid.appendChild(cell); // Вкладываем ячейку в сетку
+            cell.appendChild(imageDiv);
+            grid.appendChild(cell);
         }
     }
 
-    function showRandomImages() {
-        while (currentImageIndices.length < imagesToShow) { // Пока количество текущих изображений меньше требуемого
-            const newImageIndex = Math.floor(Math.random() * totalImages); // Выбираем случайный индекс изображения
-
-            if (!currentImageIndices.includes(newImageIndex)) { // Проверяем, чтобы не добавлять уже показанное изображение
-                currentImageIndices.push(newImageIndex); // Добавляем индекс нового изображения в массив текущих индексов
-
-                const x = (newImageIndex % 8) * (originalSize / 8); // Координаты X для фона изображения
-                const y = Math.floor(newImageIndex / 8) * (originalSize / 8); // Координаты Y для фона изображения
-
-                let randomCellIndex;
-                
-                do {
-                    randomCellIndex = Math.floor(Math.random() * (gridRows * gridCols)); // Выбираем случайную ячейку в сетке
-                } while (document.querySelectorAll('.cell')[randomCellIndex].querySelector('.image').style.display === 'block'); 
-
-                const randomCell = document.querySelectorAll('.cell')[randomCellIndex]; // Получаем случайную ячейку
-
-                const imageDiv = randomCell.querySelector('.image'); // Получаем элемент изображения из выбранной ячейки
-                imageDiv.style.backgroundPosition = `-${x}px -${y}px`; // Устанавливаем позицию фона для изображения
-                imageDiv.style.display = 'block'; // Показываем изображение
+    function initializeImageIndices() {
+        // Генерируем массив уникальных индексов
+        while (imageIndices.length < gridRows * gridCols) {
+            const randomIndex = Math.floor(Math.random() * totalImages);
+            if (!imageIndices.includes(randomIndex)) {
+                imageIndices.push(randomIndex);
             }
         }
     }
 
-    function handleImageClick(imageDiv) {
-        if (isWaiting) return; // Если мы ожидаем, ничего не делаем
+    function showImages() {
         
-        if (currentImageIndices.length === imagesToShow) { 
+
+        // Отображаем изображения по порядку из массива imageIndices до количества imagesToShow
+        for (let i = 0; i < imagesToShow; i++) {
+            const imageIndex = imageIndices[i];
+            showImageInRandomCell(imageIndex, i);
+        }
+    }
+
+    function handleImageClick(imageDiv) {
+        if (isWaiting) return;
+
+        const clickedImageOrder = parseInt(imageDiv.parentElement.dataset.imageOrder, 10);  // Получаем порядок изображения из dataset
+        const expectedImageOrder = imagesToShow - 1;  // Ожидаемый порядок последней добавленной картинки
+        hideAllImages(); // Скрываем предыдущие изображения
+        showMessage(``);
+        if (clickedImageOrder === expectedImageOrder) {
             isWaiting = true;
 
-            setTimeout(() => { 
-                hideAllImages(); // Скрываем все изображения на полсекунды
-                isWaiting = false;
-                
-                imagesToShow++; // Увеличиваем количество изображений на одно при правильном нажатии
-                
-                showMessage(`Будет показано ${imagesToShow} картинки.`); // Показать сообщение о количестве картинок
-                
-                repositionImages(); // Перемещаем картинки в новые случайные места
-                showRandomImages(); // Показываем требуемое количество изображений на новых случайных местах
-            }, 500);
-        } else if (currentImageIndices.includes(Array.from(document.querySelectorAll('.image')).indexOf(imageDiv))) {
-            isWaiting = true;
+            setTimeout(() => {
+                imagesToShow++;
+                showMessage(`Верно!`);
 
-            setTimeout(() => { 
-                hideAllImages(); 
+                showImages(); // Показываем новые изображения
                 isWaiting = false;
-                
-                showMessage(`Неправильно! Будет показано ${imagesToShow} картинки.`); 
-                
-                repositionImages(); 
-                showRandomImages(); 
-            }, 500);
+            }, 1000);
         } else {
             isWaiting = true;
 
             setTimeout(() => {
-                hideAllImages(); 
+                showMessage("Неверно! Попробуйте снова.");
+                
+                showImages(); // Показываем те же изображения снова
                 isWaiting = false;
-                
-                showMessage(`Неправильно! Будет показано ${imagesToShow} картинки.`); 
-                
-                repositionImages(); 
-                showRandomImages(); 
-            }, 500);
+            }, 1000);
         }
     }
 
     function hideAllImages() {
-        document.querySelectorAll('.image').forEach(imageDiv => { 
-            imageDiv.style.display = 'none'; // Скрываем все изображения
+        document.querySelectorAll('.image').forEach(imageDiv => {
+            imageDiv.style.display = 'none';
         });
-        
-        currentImageIndices = []; // Очищаем массив текущих индексов изображений после скрытия
     }
 
-    function repositionImages() {
-        currentImageIndices.forEach(index => { 
-           document.querySelectorAll('.image')[index].style.display = 'block'; 
-           document.querySelectorAll('.image')[index].style.backgroundPosition =
-               `-${(index % 8) * (originalSize / 8)}px -${Math.floor(index / 8) * (originalSize / 8)}px`;
-       });
+    function showImageInRandomCell(imageIndex, imageOrder) {
+        const x = (imageIndex % 8) * (originalSize / 8);
+        const y = Math.floor(imageIndex / 8) * (originalSize / 8);
+
+        let randomCellIndex;
+        do {
+            randomCellIndex = Math.floor(Math.random() * (gridRows * gridCols));
+        } while (document.querySelectorAll('.cell')[randomCellIndex].querySelector('.image').style.display === 'block');
+
+        const randomCell = document.querySelectorAll('.cell')[randomCellIndex];
+        const imageDiv = randomCell.querySelector('.image');
+        imageDiv.style.backgroundPosition = `-${x}px -${y}px`;
+        imageDiv.style.display = 'block';
+
+        // Присваиваем порядок показа для проверки в handleImageClick
+        randomCell.dataset.imageOrder = imageOrder; // Запоминаем порядок показа в dataset
     }
 
     function showMessage(message) {
-        document.getElementById('message').textContent = message; // Отображаем сообщение игроку
+        document.getElementById('message').textContent = message;
     }
 
-    window.onload = () => { 
-        createGrid(); // Создаем сетку при загрузке страницы
-        showRandomImages(); // Показываем одно случайное изображение при загрузке страницы
+    window.onload = () => {
+        createGrid();            // Создаем сетку
+        initializeImageIndices(); // Инициализируем массив случайных уникальных индексов
+        showImages();            // Показываем начальное изображение
     };
 </script>
+
+
+
+
 
 </body>
 </html>
