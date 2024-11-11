@@ -1,165 +1,61 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"> <!-- Устанавливаем кодировку документа -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Настраиваем адаптивность страницы для мобильных устройств -->
-    <title>Угадай следующую картинку</title> <!-- Заголовок страницы -->
-    <style>
-        body {
-            display: flex; /* Используем flexbox для центрирования содержимого */
-            flex-direction: column; /* Устанавливаем вертикальное направление для содержимого */
-            justify-content: center; /* Центрируем по вертикали */
-            align-items: center; /* Центрируем по горизонтали */
-            height: 100vh; /* Высота экрана */
-            background-color: #f0f0f0; /* Цвет фона страницы */
-        }
-        .grid {
-            display: grid; /* Используем CSS Grid для создания сетки */
-            grid-template-columns: repeat(6, 64px); /* 6 столбцов по 64 пикселя */
-            grid-template-rows: repeat(8, 64px); /* 8 рядов по 64 пикселя */
-            gap: 0px; /* Промежутки между ячейками */
-        }
-        .cell {
-            width: 64px; /* Ширина ячейки */
-            height: 64px; /* Высота ячейки */
-            background-color: white; /* Цвет фона ячейки */
-            border: 1px solid #ccc; /* Граница ячейки */
-            position: relative; /* Для абсолютного позиционирования изображения внутри ячейки */
-        }
-        .image {
-            width: 100%; /* Ширина изображения равна ширине ячейки */
-            height: 100%; /* Высота изображения равна высоте ячейки */
-            background-image: url('collect.png'); /* Фоновое изображение из файла collect.png */
-            background-size: 512px 512px; /* Размер оригинального изображения */
-            position: absolute; /* Абсолютное позиционирование для изображения внутри ячейки */
-            top: 0; /* Позиция сверху */
-            left: 0; /* Позиция слева */
-            display: none; /* Скрываем изображение по умолчанию */
-        }
-        .message {
-            margin-top: 20px; /* Отступ сверху для сообщения */
-            font-size: 18px; /* Размер шрифта сообщения */
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Шаблон игры</title>
 </head>
 <body>
-
-<div class="grid" id="grid"></div> <!-- Контейнер для сетки -->
-<div class="message" id="message"></div> <!-- Контейнер для сообщений -->
-
-<script>
-    const totalImages = 64;       // Всего доступных картинок
-    const originalSize = 512;     // Размер оригинального изображения
-    const gridRows = 8;           // Количество строк сетки
-    const gridCols = 6;           // Количество столбцов сетки
-    let imageIndices = [];        // Массив для хранения случайных уникальных индексов изображений
-    let imagesToShow = 1;         // Количество отображаемых изображений (начинаем с 1)
-    let isWaiting = false;        // Флаг ожидания для предотвращения повторных кликов
-
-    function createGrid() {
-        const grid = document.getElementById('grid');
+    <div id="overlay">Загрузка<span class="dots"></span></div>
+    
+    <h1 style="text-align: center;">Название игры</h1>
+    
+    <!-- окно настроек -->
+    <div id="window_settings" class="window active" style="width: 300px; height: auto;">
+        <h2>Настройки</h2>
+        <div class="dekor"> 
+            <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+            <p></p>
+            <label for="timeLimit">Время на игру (3 мин):</label>
+            <input type="range" id="timeLimit" min="1" max="10" value="3" style="height: 15px; width: 200px;" oninput="updateTimeLimit(this.value)">
         
-        for (let i = 0; i < gridRows * gridCols; i++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
+            <p></p>
+            <label for="errCount">Число ошибок (5):</label>
             
-            const imageDiv = document.createElement('div');
-            imageDiv.classList.add('image');
-            
-            imageDiv.onclick = () => handleImageClick(imageDiv);  // Передаем элемент изображения в обработчик клика
+            <input type="range" id="errCount" min="1" max="10" value="5" style="height: 15px; width: 200px;" oninput="updateErrCount(this.value)">
+            <p></p>
+        </div>
+        <button class="custom-button" id="towindow_game">Играть</button>        
+	        
+    </div>
 
-            cell.appendChild(imageDiv);
-            grid.appendChild(cell);
-        }
-    }
-
-    function initializeImageIndices() {
-        // Генерируем массив уникальных индексов
-        while (imageIndices.length < gridRows * gridCols) {
-            const randomIndex = Math.floor(Math.random() * totalImages);
-            if (!imageIndices.includes(randomIndex)) {
-                imageIndices.push(randomIndex);
-            }
-        }
-    }
-
-    function showImages() {
+    <!-- Второе окно -->
+    <div id="window_game" class="window" style="width: 384px; height: auto;">
+        <h2 class="message" id="message">Нажми на картинку</h2>
+        <p></p>
+        
+        
+        <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
+            <div id="progress"></div>
+        </div>
+        <p></p>
+        <div class="grid" id="grid"></div> <!-- Контейнер для сетки -->
         
 
-        // Отображаем изображения по порядку из массива imageIndices до количества imagesToShow
-        for (let i = 0; i < imagesToShow; i++) {
-            const imageIndex = imageIndices[i];
-            showImageInRandomCell(imageIndex, i);
-        }
-    }
+    </div>
 
-    function handleImageClick(imageDiv) {
-        if (isWaiting) return;
-
-        const clickedImageOrder = parseInt(imageDiv.parentElement.dataset.imageOrder, 10);  // Получаем порядок изображения из dataset
-        const expectedImageOrder = imagesToShow - 1;  // Ожидаемый порядок последней добавленной картинки
-        hideAllImages(); // Скрываем предыдущие изображения
-        showMessage(``);
-        if (clickedImageOrder === expectedImageOrder) {
-            isWaiting = true;
-
-            setTimeout(() => {
-                imagesToShow++;
-                showMessage(`Верно!`);
-
-                showImages(); // Показываем новые изображения
-                isWaiting = false;
-            }, 1000);
-        } else {
-            isWaiting = true;
-
-            setTimeout(() => {
-                showMessage("Неверно! Попробуйте снова.");
-                
-                showImages(); // Показываем те же изображения снова
-                isWaiting = false;
-            }, 1000);
-        }
-    }
-
-    function hideAllImages() {
-        document.querySelectorAll('.image').forEach(imageDiv => {
-            imageDiv.style.display = 'none';
-        });
-    }
-
-    function showImageInRandomCell(imageIndex, imageOrder) {
-        const x = (imageIndex % 8) * (originalSize / 8);
-        const y = Math.floor(imageIndex / 8) * (originalSize / 8);
-
-        let randomCellIndex;
-        do {
-            randomCellIndex = Math.floor(Math.random() * (gridRows * gridCols));
-        } while (document.querySelectorAll('.cell')[randomCellIndex].querySelector('.image').style.display === 'block');
-
-        const randomCell = document.querySelectorAll('.cell')[randomCellIndex];
-        const imageDiv = randomCell.querySelector('.image');
-        imageDiv.style.backgroundPosition = `-${x}px -${y}px`;
-        imageDiv.style.display = 'block';
-
-        // Присваиваем порядок показа для проверки в handleImageClick
-        randomCell.dataset.imageOrder = imageOrder; // Запоминаем порядок показа в dataset
-    }
-
-    function showMessage(message) {
-        document.getElementById('message').textContent = message;
-    }
-
-    window.onload = () => {
-        createGrid();            // Создаем сетку
-        initializeImageIndices(); // Инициализируем массив случайных уникальных индексов
-        showImages();            // Показываем начальное изображение
-    };
-</script>
-
-
-
-
-
+    <!-- Третье окно -->
+    <div id="window_result" class="window" style="width: 300px; height: auto;">
+        <h2>Результаты</h2>
+	<p></p>
+        <div class="timer"><b>Время:</b><br><span id="time_elasted">—</span></div>
+        <div class="best-time"><b>Лучшее время:</b><br><span id="best-time">—</span></div>
+        
+        <p></p>
+        <button id="backTowindow_settings">Назад</button>
+    </div>
+   
+    <script src="script.js"></script>
 </body>
 </html>
