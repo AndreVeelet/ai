@@ -96,8 +96,10 @@ function updateTimeLimit(value) {
     document.querySelector('label[for="timeLimit"]').textContent = `Время на игру (${value} мин):`;
 }
 
-
+let t_out;
+const progressBar = document.getElementById('progress');
 function startGame() {
+    imageIndices = [];
     initializeImageIndices(); // Инициализируем массив случайных уникальных индексов
     imagesToShow = 1;
     showImages();    
@@ -109,46 +111,39 @@ function startGame() {
     updateErrCount(errCount); // Обновляем текст ползунка количества слов с текущим значением
     updateTimeLimit(timeLimit);
 
-  //  alert(`timeLimit = ${timeLimit}, errCount = ${errCount}`);
-    setTimeout(() => {
-        
-        endGame(); // Если все числа найдены
-    }, timeLimit*60000 + 500);
+    startProgressBar(timeLimit*60000);
+    
+    
+    t_out = setTimeout(() => {
+        alert(`Время истекло!`);
+        endGame(); // Если время истекло    
+    },  + timeLimit*60000);
 
-    startProgressBar(timeLimit * 60000); // Передаем время для синхронизации 
-    
-    const interval = setInterval(() => {
-           
-       // updateTimer();
-    }, 10);
-    
 }    
 
-
 function startProgressBar(duration) {
-    const progressBar = document.getElementById('progress');
-    
     // Сбрасываем ширину и убираем transition, чтобы не было мгновенного заполнения
     progressBar.style.width = '0%';
-    progressBar.style.transition = 'none'; 
-    
+    progressBar.style.transition = 'none';
     // Запускаем плавное увеличение ширины после небольшого тайм-аута, чтобы сброс применился
     setTimeout(() => {
         progressBar.style.transition = `width ${duration}ms linear`; // Устанавливаем плавную анимацию
         progressBar.style.width = '100%'; // Увеличиваем до 100% за заданное время
-    }, 50);  // Небольшая задержка, чтобы CSS успел сбросить ширину
+     }, 50);  // Небольшая задержка, чтобы CSS успел сбросить ширину
 }
 
 // Окончание игры
 function endGame() {
-    
-    
+    hideAllImages(); 
+    clearTimeout(t_out);
     hideAllWindows(); // Скрываем все окна
+    isWaiting = false;
+    document.getElementById('score').textContent = `Найдено картинок: ${imagesToShow - 1}.`;
     window_result.classList.add('active'); // Показываем окно 3
   
 }
 
-const totalImages = 64;       // Всего доступных картинок
+    const totalImages = 64;       // Всего доступных картинок
     const originalSize = 512;     // Размер оригинального изображения
     const gridRows = 8;           // Количество строк сетки
     const gridCols = 6;           // Количество столбцов сетки
@@ -184,9 +179,7 @@ const totalImages = 64;       // Всего доступных картинок
     }
 
     function showImages() {
-        
-
-        // Отображаем изображения по порядку из массива imageIndices до количества imagesToShow
+            // Отображаем изображения по порядку из массива imageIndices до количества imagesToShow
         for (let i = 0; i < imagesToShow; i++) {
             const imageIndex = imageIndices[i];
             showImageInRandomCell(imageIndex, i);
@@ -208,19 +201,26 @@ const totalImages = 64;       // Всего доступных картинок
             showMessage(`Верно!`);
             setTimeout(() => {
                 imagesToShow++;
+                if (imagesToShow > gridCols*gridRows) {endGame();}
+              
                 showImages(); // Показываем новые изображения
                 isWaiting = false;
                 showMessage(`Нажми на новую картинку`);
             }, 1500);
         } else {
             isWaiting = true;
-            showMessage(`Неверно! Попробуйте снова.`);
-            setTimeout(() => {
-                               
-               showImages(); // Показываем те же изображения снова
-               isWaiting = false;
-               showMessage(`Нажми на новую картинку`);
-            }, 2500);
+            errCount--;
+            if (errCount === 0) {       endGame();
+            } else {
+                showMessage(`Неверно! Осталось попыток: ${errCount}.`);
+            
+                setTimeout(() => {
+                   showImages(); // Показываем те же изображения снова
+                   isWaiting = false;
+                   showMessage(`Нажми на новую картинку`);
+                }, 2500);  
+            }
+           
         }
     }
 
@@ -252,10 +252,7 @@ const totalImages = 64;       // Всего доступных картинок
         document.getElementById('message').textContent = message;
     }
 
-    window.onload = () => {
-               // Показываем начальное изображение
-    };
-
+    
 
 // Запускаем игру при загрузке страницы
 window.onload = () => {
@@ -265,8 +262,6 @@ window.onload = () => {
     updateTimeLimit(timeLimit);   // Обновляем текст ползунка времени с текущим значением
 
     createGrid();            // Создаем сетку
-    
-
 };
 
 

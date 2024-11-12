@@ -17,7 +17,7 @@ body {
     display: none; /* Скрываем все окна по умолчанию */
     border: 1px solid #ffffff; /* Рамка вокруг окон */
     border-radius: 10px; /* Скругление углов рамки */
-    padding: 5px; /* Отступы внутри окон */
+    padding: 20px 0px; /* Отступы внутри окон */
     text-align: center; /* Центрируем текст внутри окон */
     background-color: #bbbbbb; /* Цвет фона */
     color: #000000;
@@ -31,6 +31,7 @@ body {
     text-align: center; /* Центрируем текст внутри окон */
     background-color: #dddddd; /* Цвет фона */
     box-shadow: inset 0 3px 5px -1px rgb(0, 0, 0);
+    margin: 20px;
 }
 .custom-button {
     background-color:chocolate; /* Зеленый фон */

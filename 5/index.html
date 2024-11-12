@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css"/>
-    <title>Шаблон игры</title>
+    <title>Развитие памяти - Парочки</title>
 </head>
 <body>
     <div id="overlay">Загрузка<span class="dots"></span></div>
     
-    <h1 style="text-align: center;">Название игры</h1>
+    <h1 style="text-align: center;">Развитие памяти<br>Парочки</h1>
     
     <!-- окно настроек -->
     <div id="window_settings" class="window active" style="width: 300px; height: auto;">
@@ -47,11 +47,10 @@
 
     <!-- Третье окно -->
     <div id="window_result" class="window" style="width: 300px; height: auto;">
-        <h2>Результаты</h2>
+        <h2>Результат</h2>
 	<p></p>
-        <div class="timer"><b>Время:</b><br><span id="time_elasted">—</span></div>
-        <div class="best-time"><b>Лучшее время:</b><br><span id="best-time">—</span></div>
-        
+        <div id="score"></div>
+                
         <p></p>
         <button id="backTowindow_settings">Назад</button>
     </div>
