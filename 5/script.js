@@ -201,7 +201,7 @@ function endGame() {
             showMessage(`Верно!`);
             setTimeout(() => {
                 imagesToShow++;
-                if (imagesToShow > gridCols*gridRows) {endGame();}
+                if (imagesToShow === gridCols*gridRows) {endGame();}
               
                 showImages(); // Показываем новые изображения
                 isWaiting = false;
