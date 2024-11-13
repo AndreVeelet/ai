@@ -200,9 +200,9 @@ function endGame() {
             isWaiting = true;
             showMessage(`Верно!`);
             setTimeout(() => {
-                imagesToShow++;
+                
                 if (imagesToShow === gridCols*gridRows) {endGame();}
-              
+              imagesToShow++;
                 showImages(); // Показываем новые изображения
                 isWaiting = false;
                 showMessage(`Нажми на новую картинку`);
