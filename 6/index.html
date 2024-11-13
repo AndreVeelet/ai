@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перетаскиваемые изображения</title>
+    <style>
+        /* Контейнер с серым фоном */
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: #333333; /* Серый фон */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px; /* Оставляем место для кнопок */
+            box-sizing: border-box;
+        }
+
+        /* Стили для панели управления */
+        #controls {
+            position: absolute;
+            top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Уменьшенное изображение */
+        .draggable {
+            position: absolute;
+            cursor: grab;
+            touch-action: none; /* Отключаем жесты на тач-устройствах */
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="controls">
+        <input type="file" id="fileInput" accept="image/png" />
+        <label>
+            <input type="checkbox" id="scaleCheckbox" /> Уменьшить в 2 раза
+        </label>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
