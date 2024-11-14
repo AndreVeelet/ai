@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Animation</title>
+  <style>
+    /* Общие стили */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .animation-container {
+      display: flex;
+      gap: 20px;
+    }
+
+    .animation {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .animation img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+<div class="animation-container">
+  <div class="animation" id="animation1">
+    <img src="1.png" alt="Animation 1" id="img1">
+  </div>
+  <div class="animation" id="animation2">
+    <img src="1.png" alt="Animation 2" id="img2">
+  </div>
+</div>
+
+<script>
+  // Параметры анимации
+  const images = ["png/1.png", "png/2.png", "png/3.png", "png/4.png", "png/5.png", "png/6.png", "png/7.png", "png/8.png"];
+  const intervalTime = 250; // Интервал между сменой изображений (в миллисекундах)
+
+  // Функция для создания анимации
+  function createAnimation(elementId, imgId) {
+    let index = 0;
+    let interval = null;
+
+    // Функция запуска анимации
+    function start() {
+      interval = setInterval(() => {
+        document.getElementById(imgId).src = images[index];
+        index = (index + 1) % images.length;
+      }, intervalTime);
+    }
+
+    // Функция остановки анимации
+    function stop() {
+      clearInterval(interval);
+      interval = null;
+    }
+
+    // Переключение состояния анимации при клике
+    document.getElementById(elementId).addEventListener("click", () => {
+      if (interval) {
+        stop();
+      } else {
+        start();
+      }
+    });
+
+    // Запуск анимации при загрузке
+    start();
+  }
+
+  // Создаем две анимации
+  createAnimation("animation1", "img1");
+  createAnimation("animation2", "img2");
+</script>
+
+</body>
+</html>
