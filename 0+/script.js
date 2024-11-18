@@ -212,8 +212,9 @@ function updateWindowSize(){
     document.body.style.transform = 'scale(1)';
     document.body.style.backgroundSize = 'auto';
     if (width < 500) {
-        document.body.style.transform = 'scale(' + width/500 + ')';
+        //document.body.style.transform = 'scale(' + width/500 + ')';
         document.body.style.backgroundSize = '100% auto';
+        document.body.style.transform = 'scale(0.75)';
     }
     
 }
