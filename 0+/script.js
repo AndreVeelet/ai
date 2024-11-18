@@ -198,16 +198,17 @@ function loadBestTime() {
 
 // Запускаем игру при загрузке страницы
 window.onload = () => {
-  document.body.style.transform = 'scale(1)';
+    document.body.style.transformOrigin = 'top center';
+    document.body.style.transform = 'scale(1)';
     document.body.style.backgroundSize = 'auto';
-    if (window.innerWidth < 500) {
-        document.body.style.transform = 'scale(' + window.innerWidth/500 + ')';
+    if (document.documentElement.clientWidth < 500) {
+        document.body.style.transform = 'scale(' + document.documentElement.clientWidth/500 + ')';
         document.body.style.backgroundSize = '100% auto';
     }
     loadBestTime(); // Загружаем лучшее время при загрузке страницы
 };
 
-document.body.style.transformOrigin = 'top center';
+
 function updateWindowSize(){
     const width = window.innerWidth;
   
