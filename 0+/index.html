@@ -27,91 +27,48 @@
                 <input type="range" id="timeLimit" min="5" max="20" value="10" style="height: 30px; width: 300px;" oninput="updateTimeLimit(this.value)">
                 <p></p>
             </div>
-            <button class="custom-button" id="towindow_game">Играть</button>    
+            <button class="custom-button" id="towindow_game"><b>Играть</b></button>    
         
         </div>
 
     </div>
-    
-
-    <div id="container" style="position:relative; width: 500px; height: auto;"> 
-       <img src="img/1.png" id='img1' style='position: absolute; top: 0px; left: 0px;'> </img>
-       <img src="img/2.png" id='img1' style='position: absolute; top: 0px; left: 100px;'> </img>
-       <img src="img/3.png" id='img1' style='position: absolute; top: 0px; left: 200px;'> </img>
-       <img src="img/4.png" id='img1' style='position: absolute; top: 0px; left: 300px;'> </img>
-       <img src="img/5.png" id='img1' style='position: absolute; top: 0px; left: 400px;'> </img>
-       <img src="img/6.png" id='img1' style='position: absolute; top: 100px; left: 10px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/7.png" id='img1' style='position: absolute; top: 100px; left: 90px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/8.png" id='img1' style='position: absolute; top: 100px; left: 170px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/9.png" id='img1' style='position: absolute; top: 100px; left: 250px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/1.png" id='img1' style='position: absolute; top: 100px; left: 330px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/2.png" id='img1' style='position: absolute; top: 100px; left: 410px; transform-origin: top left; scale: 0.8;'> </img>
-
-       <img src="img/1.png" id='img1' style='position: absolute; top: 180px; left: 10px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/2.png" id='img1' style='position: absolute; top: 180px; left: 90px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/3.png" id='img1' style='position: absolute; top: 180px; left: 170px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/4.png" id='img1' style='position: absolute; top: 180px; left: 250px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/5.png" id='img1' style='position: absolute; top: 180px; left: 330px; transform-origin: top left; scale: 0.8;'> </img>
-       <img src="img/6.png" id='img1' style='position: absolute; top: 180px; left: 410px; transform-origin: top left; scale: 0.8;'> </img>
-
-       <img src="img/7.png" id='img1' style='position: absolute; top: 270px; left: 5px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/8.png" id='img1' style='position: absolute; top: 270px; left: 75px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/9.png" id='img1' style='position: absolute; top: 270px; left: 145px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/10.png" id='img1' style='position: absolute; top: 270px; left: 215px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/11.png" id='img1' style='position: absolute; top: 270px; left: 285px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/12.png" id='img1' style='position: absolute; top: 270px; left: 355px; transform-origin: top left; scale: 0.7;'> </img>
-       <img src="img/13.png" id='img1' style='position: absolute; top: 270px; left: 425px; transform-origin: top left; scale: 0.7;'> </img>
-
-    </div>
-    <!-- окно настроек 
-    <div id="window_settings" class="window active" style="width: 400px; height: auto;">
-        <h2>Настройки</h2>
-        <div class="dekor"> 
+ 
+    <!-- окно игры -->
+    <div id="window_game">
+        <div style="width: 500px; height: auto; display: flex; flex-direction: column; justify-content: center;  align-items: center;  margin: 0px; background-color: rgba(40, 40, 40, .8);">
+            <p>Небольшая инструкция</p>
             
+            <h2 id="message">Сообщение</h2>
             <p></p>
-            <label for="grid-size">Список: </label>
-            <select id="grid-size">
-                <option value="4">1 элемент</option>
-                <option value="5" selected>2 элемент</option>
-                <option value="6">3 элемент</option>
-                <option value="7">4 элемент</option>
-            </select>
-            <p></p>
-            <p></p>
-        </div>
-        <button class="custom-button" id="towindow_game">Играть</button>        
-	        
-    </div>
-    -->
-    <!-- Второе окно -->
-    <div id="window_game" class="window" style="width: 340px; height: auto;">
-        <h2>Небольшая инструкция <br>что делать</h2>
-        <p></p>
-        <div class="timer">Время: <span id="time">0.0</span> секунд</div>
-        <p></p>
-
-        <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
+            <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
             <div id="progress"></div>
+            </div>
         </div>
-        
-        <div class="grid" id="grid">
+        <p></p>
+        <div id="grid">
             <!-- Клетки таблицы будут генерироваться здесь -->
         </div>
-        
-
-    </div>
-
+    </div> 
+       
     <!-- Третье окно -->
-    <div id="window_result" class="window" style="width: 300px; height: auto;">
-        <h2>Результаты</h2>
-	<p></p>
-        <div class="timer"><b>Время:</b><br><span id="time_elasted">—</span></div>
-        <div class="best-time"><b>Лучшее время:</b><br><span id="best-time">—</span></div>
-        
-        <p></p>
-        <button id="backTowindow_settings">Назад</button>
-    </div>
 
+    <div id="window_result">
+        <div style="width: 450px; height: 50px; display: flex; justify-content: center;  align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <h1>Название программы</h1>
+        </div>   
+        <div style="width: 450px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <div>
+                <h2>Результаты</h2>
+            </div>
+            <div style="width: 400px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 0px; border-radius: 5px; background-color: rgba(40, 40, 40, .8);">
+                <p></p>
+                <div style="font-size: 24px;">Счет: <span id="score"></span></div>
+                <p></p>
+                <div style="justify-content: center; align-items: center; font-size: 24px;"><b>Лучший счет:<br><span id="best-score"></span></b></div>                <p></p>
+            </div>
+            <button id="backTowindow_settings"><b>Назад</b></button>    
+        </div>
+    </div>
 <div id="overlay">Загрузка<span class="dots"></span></div>
     <script src="script.js"></script>
 </body>
