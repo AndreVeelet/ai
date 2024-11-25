@@ -3,51 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Перетаскиваемые изображения</title>
-    <style>
-        /* Контейнер с серым фоном */
-        #container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: #333333; /* Серый фон */
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 50px; /* Оставляем место для кнопок */
-            box-sizing: border-box;
-        }
-
-        /* Стили для панели управления */
-        #controls {
-            position: absolute;
-            top: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Уменьшенное изображение */
-        .draggable {
-            position: absolute;
-            cursor: grab;
-            touch-action: none; /* Отключаем жесты на тач-устройствах */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Игра "Флаги"</title>
 </head>
 <body>
+    <!-- окно настроек -->
+    <div id="window_settings">
+        <div style="width: 450px; height: 50px; display: flex; justify-content: center;  align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <h1>Игра "Флаги"</h1>
+        </div>   
+        <div style="width: 450px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <div>
+                <h2>Настройки</h2>
+            </div>
+            <div style="width: 400px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 0px; border-radius: 5px; background-color: rgba(40, 40, 40, .8);">
+                <p></p>
+                <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+                <p></p>
+                <label for="count">Количество флагов (25):</label>
+                <input type="range" id="count" min="4" max="6" value="5" style="height: 30px; width: 300px;" oninput="updateWordCount(this.value)">
+                <p></p>
+                
+            </div>
+            <button class="custom-button" id="towindow_game"><b>Играть</b></button>    
+        
+        </div>
 
-<div id="container">
-    <div id="controls">
-        <input type="file" id="fileInput" accept="image/png" />
-        <label>
-            <input type="checkbox" id="scaleCheckbox" /> Уменьшить в 2 раза
-        </label>
     </div>
-</div>
+ 
+    <!-- окно игры -->
+    <div id="window_game">
+        <div style="width: 500px; height: auto; display: flex; flex-direction: column; justify-content: center;  align-items: center;  margin: 0px; background-color: rgba(40, 40, 40, .8);">
+            <p>Найди флаг страны</p>
+            
+            <h2 id="message">Сообщение</h2>
+            <p></p>
+            <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
+            <div id="progress"></div>
+            </div>
+        </div>
+        <p></p>
+        
+        <div class="grid" id="flag-grid"></div>
+    </div> 
+       
+    <!-- Третье окно -->
 
-<script src="script.js"></script>
-
+    <div id="window_result">
+        <div style="width: 450px; height: 50px; display: flex; justify-content: center;  align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <h1>Игра "Флаги"</h1>
+        </div>   
+        <div style="width: 450px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <div>
+                <h2>Результаты</h2>
+            </div>
+            <div style="width: 400px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 0px; border-radius: 5px; background-color: rgba(40, 40, 40, .8);">
+                <p></p>
+                <div style="font-size: 24px;">Счет: <span id="score"></span></div>
+                <p></p>
+                <div style="justify-content: center; align-items: center; font-size: 24px;"><b>Лучший счет: <span id="best-score"></span></b></div>                <p></p>
+            </div>
+            <button id="backTowindow_settings"><b>Назад</b></button>    
+        </div>
+    </div>
+<div id="overlay">Загрузка<span class="dots"></span></div>
+    <script src="script.js"></script>
 </body>
 </html>
