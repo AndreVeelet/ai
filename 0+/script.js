@@ -1,3 +1,4 @@
+
 let isWindowActive = false; // Переменная для отслеживания состояния окна
 // Функция для прекращения действия по умолчанию
 document.addEventListener('touchmove', function(e) {
@@ -147,6 +148,7 @@ function loadBestScore() {
 
 // Запускаем игру при загрузке страницы
 window.onload = () => {
+    setRandomBackground();
     count = document.getElementById('count').value;
     timeLimit = document.getElementById('timeLimit').value;  
     updateWordCount(count); // Обновляем текст ползунка количества слов с текущим значением
@@ -198,4 +200,16 @@ function loadImages() {
         imgContainer.appendChild(img);
         grid.appendChild(imgContainer);
     });
+}
+
+// Создаем массив с именами изображений 
+const bg_images = [];
+for (let i = 1; i <= 70; i++) {
+    bg_images.push(`UI/bg${String(i).padStart(2, '0')}.jpg`); // Формируем имена файлов bg01.jpg, bg02.jpg и т.д.
+}
+
+// Функция для выбора случайного изображения
+function setRandomBackground() {
+    const randomIndex = Math.floor(Math.random() * bg_images.length); // Генерируем случайный индекс
+    document.body.style.backgroundImage = `url(${bg_images[randomIndex]})`; // Устанавливаем фоновое изображение
 }

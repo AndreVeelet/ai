@@ -1,3 +1,4 @@
+
 h1 { color: rgb(200, 150, 100);text-shadow: 1px 3px 3px  #000;}
 h2 { color:wheat; text-shadow: 1px 2px 2px  #000;}
 h3 { color: #cfcfcf ; text-shadow: 1px 2px 3px  #222222; font-size: 1.5em;}
@@ -10,7 +11,7 @@ body {
     align-items: center; /* Центрируем содержимое по вертикали */
     height: 100vh; /* Высота окна браузера */
     margin: 0; /* Убираем отступы */
-    background: #333333 url('UI/bg020.jpg') no-repeat top center;
+    background: #333333 url('UI/bg51.jpg') no-repeat top center;
     background-size: auto;
     color: #c9c9c9;
 }
