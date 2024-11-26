@@ -205,7 +205,7 @@ function loadImages() {
 // Создаем массив с именами изображений 
 const bg_images = [];
 for (let i = 1; i <= 70; i++) {
-    bg_images.push(`UI/bg${String(i).padStart(2, '0')}.jpg`); // Формируем имена файлов bg01.jpg, bg02.jpg и т.д.
+    bg_images.push(`../UI/bg${String(i).padStart(2, '0')}.jpg`); // Формируем имена файлов bg01.jpg, bg02.jpg и т.д.
 }
 
 // Функция для выбора случайного изображения
