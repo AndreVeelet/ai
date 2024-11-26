@@ -99,13 +99,17 @@ const message = document.getElementById('message');
 const flagGrid = document.getElementById("flag-grid");
 
 let score = 0; // Переменная для хранения текущего счета
-let count = 10;
-let timeLimit = 30;
+let count = 5;
+let timeLimit;
 let time_out;
 let clickDisabled = false;
 
 function updateWordCount(value) {
-    document.querySelector('label[for="count"]').textContent = `Количество (${value*value}):`;
+    document.querySelector('label[for="count"]').innerHTML = `Количество флагов (<b>${value*value}</b>):
+    <p style="text-align: center; font-size: .9em; margin-top: 10; margin-bottom: 0;">
+    4х4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    5х5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    6х6</p>`;
 }
 
 
@@ -115,7 +119,9 @@ function startGame() {
     score = 0;
     count = document.getElementById('count').value;
     setupGame();
-   // loadImages();
+    
+    timeLimit = parseInt(count) === 5 ? 50 : parseInt(count) === 6 ? 60 : 40;
+
     window_game.style.display = 'block';
     startProgressBar(timeLimit * 1000); // Передаем время для синхронизации 
     time_out = setTimeout(() => {
@@ -227,8 +233,7 @@ function getRandomIndices(arr, count) {
     if (selected.name === correct.name) {
       score++;
       message.textContent = "Правильно!";
-    } else {
-     
+    } else {    
       message.textContent = "Неправильно!";
     }
 
@@ -239,7 +244,7 @@ function getRandomIndices(arr, count) {
 // Создаем массив с именами фоновых изображений 
 const bg_images = [];
 for (let i = 1; i <= 70; i++) {
-    bg_images.push(`UI/bg${String(i).padStart(2, '0')}.jpg`); // Формируем имена файлов bg01.jpg, bg02.jpg и т.д.
+    bg_images.push(`../UI/bg${String(i).padStart(2, '0')}.jpg`); // Формируем имена файлов bg01.jpg, bg02.jpg и т.д.
 }
 
 // Функция для выбора случайного изображения
