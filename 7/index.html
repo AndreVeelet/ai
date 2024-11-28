@@ -1,95 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browser Animation</title>
-  <style>
-    /* Общие стили */
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
-
-    .animation-container {
-      display: flex;
-      gap: 20px;
-    }
-
-    .animation {
-      width: 150px;
-      height: 150px;
-      border: 2px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .animation img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Игра "Преобладание"</title>
 </head>
 <body>
+    <!-- окно настроек -->
+    <div id="window_settings">
+        <div style="width: 450px; height: 50px; display: flex; justify-content: center;  align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <h1>Игра "Преобладание"</h1>
+        </div>   
+        <div style="width: 450px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <div>
+                <h2>Настройки</h2>
+            </div>
+            <div style="width: 400px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 0px; border-radius: 5px; background-color: rgba(40, 40, 40, .8);">
+                <p></p>
+                <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
+                <p></p>
+                <label for="lvl-grid"><b>Уровень сложности</b></label>
+                
+                <div id="lvl-grid">
+                    <div class="lvl-cell">
+                        <img src="lvl/lvl-1.png" alt="Level 1" class="level-image" data-level="1">
+                        <p class="level-text">Легко</p>
+                    </div>
+                    <div class="lvl-cell">
+                        <img src="lvl/lvl-2.png" alt="Level 2" class="level-image" data-level="2">
+                        <p class="level-text">Средне</p>
+                    </div>
+                    <div class="lvl-cell">
+                        <img src="lvl/lvl-3.png" alt="Level 3" class="level-image" data-level="3">
+                        <p class="level-text">Сложно</p>
+                    </div>
+                </div>
 
-<div class="animation-container">
-  <div class="animation" id="animation1">
-    <img src="1.png" alt="Animation 1" id="img1">
-  </div>
-  <div class="animation" id="animation2">
-    <img src="1.png" alt="Animation 2" id="img2">
-  </div>
-</div>
 
-<script>
-  // Параметры анимации
-  const images = ["png/1.png", "png/2.png", "png/3.png", "png/4.png", "png/5.png", "png/6.png", "png/7.png", "png/8.png"];
-  const intervalTime = 250; // Интервал между сменой изображений (в миллисекундах)
+            </div>
+            <button class="custom-button" id="towindow_game"><b>Играть</b></button>    
+        
+        </div>
 
-  // Функция для создания анимации
-  function createAnimation(elementId, imgId) {
-    let index = 0;
-    let interval = null;
+    </div>
+ 
+    <!-- окно игры -->
+    <div id="window_game">
+        <div style="width: 500px; height: auto; display: flex; flex-direction: column; justify-content: center;  align-items: center;  margin: 0px; background-color: rgba(40, 40, 40, .8);">
+                        
+            <h2 id="message">Сообщение</h2>
+            
+            <div id="progressBar">           <!-- Контейнер для прогресс-бара -->
+            <div id="progress"></div>
+            </div>
+        </div>
+        <p></p>
+        
+        <div class="grid" id="grid"></div>
+    </div> 
+       
+    <!-- Третье окно -->
 
-    // Функция запуска анимации
-    function start() {
-      interval = setInterval(() => {
-        document.getElementById(imgId).src = images[index];
-        index = (index + 1) % images.length;
-      }, intervalTime);
-    }
-
-    // Функция остановки анимации
-    function stop() {
-      clearInterval(interval);
-      interval = null;
-    }
-
-    // Переключение состояния анимации при клике
-    document.getElementById(elementId).addEventListener("click", () => {
-      if (interval) {
-        stop();
-      } else {
-        start();
-      }
-    });
-
-    // Запуск анимации при загрузке
-    start();
-  }
-
-  // Создаем две анимации
-  createAnimation("animation1", "img1");
-  createAnimation("animation2", "img2");
-</script>
-
+    <div id="window_result">
+        <div style="width: 450px; height: 50px; display: flex; justify-content: center;  align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <h1>Игра "Преобладание"</h1>
+        </div>   
+        <div style="width: 450px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 25px; border-radius: 10px; background-color: rgba(100, 100, 100, .5);">
+            <div>
+                <h2>Результаты</h2>
+            </div>
+            <div style="width: 400px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;  margin: 0px; border-radius: 5px; background-color: rgba(40, 40, 40, .8);">
+                <p></p>
+                <div style="font-size: 24px;">Счет: <span id="score"></span></div>
+                <p></p>
+                <div style="justify-content: center; align-items: center; font-size: 24px;"><b>Лучший счет: <span id="best-score"></span></b></div>                <p></p>
+            </div>
+            <button id="backTowindow_settings"><b>Назад</b></button>    
+        </div>
+    </div>
+<div id="overlay">Загрузка<span class="dots"></span></div>
+    <script src="script.js"></script>
 </body>
 </html>
