@@ -151,7 +151,7 @@ select, button {
     display: grid;
     grid-template-columns: repeat(8, 60px);
     grid-template-rows: repeat(8, 60px);
-    gap: 2.7px;
+    gap: 2.5px;
     width: 500px;
     margin: 20px auto;
 }
