@@ -104,12 +104,34 @@ let timeLimit;
 let time_out;
 let clickDisabled = false;
 
-function updateWordCount(value) {
-    document.querySelector('label[for="count"]').innerHTML = `Количество флагов (<b>${value*value}</b>):
-    <p style="text-align: center; font-size: .9em; margin-top: 10; margin-bottom: 0;">
-    4х4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    5х5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    6х6</p>`;
+function updateLevel() {
+    const images = document.querySelectorAll('.level-image');
+    images[1].style.opacity = '1';
+    images[1].style.transform = 'scale(1)';
+    const text = images[1].nextElementSibling;
+    text.style.fontWeight = 'bold';
+    text.style.fontSize = `1.1em`;
+
+    images.forEach(image => {
+        image.addEventListener('click', () => {
+            // Убираем выделение с остальных изображений
+            images.forEach(img => {
+                img.style.opacity = '0.2';
+                img.style.transform = 'scale(0.75)';
+                img.nextElementSibling.style.fontWeight = 'normal'; // Сбрасываем жирный шрифт
+                img.nextElementSibling.style.fontSize = `.9em`;
+            });
+            // Выделяем текущее изображение
+            image.style.opacity = '1';
+            image.style.transform = 'scale(1)';
+            // Делаем текст жирным
+            const text = image.nextElementSibling;
+            text.style.fontWeight = 'bold';
+            text.style.fontSize = `1.1em`;
+            count = parseInt(image.getAttribute('data-level'));
+           // console.log('Текущий уровень:', count);
+        });
+    });
 }
 
 
@@ -117,7 +139,7 @@ function updateWordCount(value) {
 const progressBar = document.getElementById('progress');
 function startGame() {
     score = 0;
-    count = document.getElementById('count').value;
+   // count = document.getElementById('count').value;
     setupGame();
     
     timeLimit = parseInt(count) === 5 ? 50 : parseInt(count) === 6 ? 60 : 40;
@@ -170,9 +192,7 @@ function loadBestScore() {
 // Запускаем игру при загрузке страницы
 window.onload = () => {
     setRandomBackground();
-    count = document.getElementById('count').value;
-   
-    updateWordCount(count); // Обновляем текст ползунка количества слов с текущим значением
+    updateLevel(); // Обновляем уровень
    
     window_game.style.display = 'none';
     window_result.style.display = 'none';

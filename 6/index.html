@@ -20,9 +20,22 @@
                 <p></p>
                 <label><input type="checkbox" id="fullscreenCheckbox"> Полноэкранный режим</label>
                 <p></p>
-                <label for="count"></label>
-                <input type="range" id="count" min="4" max="6" value="5" style="height: 30px; width: 150px;" oninput="updateWordCount(this.value)">
-                <p></p>
+                <label for="lvl-grid"><b>Уровень сложности</b></label>
+                
+                <div id="lvl-grid">
+                    <div class="cell">
+                        <img src="lvl/lvl-1.png" alt="Level 1" class="level-image" data-level="4">
+                        <p class="level-text">Легко</p>
+                    </div>
+                    <div class="cell">
+                        <img src="lvl/lvl-2.png" alt="Level 2" class="level-image" data-level="5">
+                        <p class="level-text">Средне</p>
+                    </div>
+                    <div class="cell">
+                        <img src="lvl/lvl-3.png" alt="Level 3" class="level-image" data-level="6">
+                        <p class="level-text">Сложно</p>
+                    </div>
+                </div>
                 
             </div>
             <button class="custom-button" id="towindow_game"><b>Играть</b></button>    

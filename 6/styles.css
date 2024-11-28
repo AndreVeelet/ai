@@ -119,6 +119,32 @@ select, button {
     transition: none;  /* Без анимации до начала функции */
 }
 
+#lvl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: auto auto;
+    width: 300px;
+    margin-top: 10px;
+}
+
+.cell {
+    text-align: center;
+}
+
+.level-image {
+    width: 100px;
+    height: 100px;
+    opacity: 0.2;
+    transform: scale(0.75);
+    transition: opacity 0.3s, transform 0.3s; /* Плавный переход для изменений */
+}
+
+.level-text {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    font-size: .9em;
+}
+
 /*ИГРА*/
 
 .grid {
