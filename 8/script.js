@@ -139,7 +139,7 @@ function handleCellClick(event) {
         }
     });
     if (control_end === 0){
-        
+        backTowindow_settingsButton.innerHTML = '<b>Назад</b>';
         back = true;
         message.innerHTML = 'Победа!';
         gridElement.classList.add('disabled');
