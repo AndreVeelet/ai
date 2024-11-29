@@ -1,23 +1,141 @@
-/* styles.css */
+
+h1 { color: rgb(200, 150, 100);text-shadow: 1px 3px 3px  #000;}
+h2 { color:wheat; text-shadow: 1px 2px 2px  #000;}
+h3 { color: #cfcfcf ; text-shadow: 1px 2px 3px  #222222; font-size: 1.5em;}
+label,p { color:#c9c9c9; font-size: 1.2em; text-shadow: 1px 2px 3px  #000;}
 body {
+    font-family: 'Calibri Light', Calibri, sans-serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
+    /*justify-content: flex-start;  Центрируем содержимое по горизонтали */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    height: 100vh; /* Высота окна браузера */
+    margin: 0; /* Убираем отступы */
+    background: #333333 url('UI/bg51.jpg') no-repeat top center;
+    background-size: auto;
+    color: #c9c9c9;
 }
+
+.custom-button {
+    background-color:chocolate; /* Зеленый фон */
+    color: white; /* Белый текст */
+    border: none; /* Рамка вокруг окон */
+    border-radius: 10px; /* Скругление углов рамки */
+    padding: 15px 30px; /* Отступы */
+    font-size: 16px; /* Размер шрифта */
+    text-shadow: 1px 2px 3px brown;
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    transition: background-color 0.3s, transform 0.1s; /* Плавный переход для фона и трансформации */
+    margin-top: 20px; /* Отступ сверху */
+    margin-bottom: 20px; /* Отступ снизу */
+    box-shadow: 0 4px 15px chocolate;
+}
+
+
+/* Эффект при наведении */
+.custom-button:hover {
+    
+    background-color:rgba(210, 105, 30, 0.8); /* Темно-зеленый фон при наведении */
+}
+
+/* Эффект при нажатии */
+.custom-button:active {
+    transform: scale(0.9); /* Уменьшение размера кнопки при нажатии */
+    background-color:rgba(210, 105, 30, 0.8)
+} 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: center;
+    width: 500px;
+    height: 1000px;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2em;
+} 
+
+.hidden {
+    display: none;
+}
+#backTowindow_settings {
+    display: block;
+    margin: 20px auto; /* Отцентрирует кнопку по горизонтали */
+    padding: 10px 20px;
+    background-color: chocolate;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Анимация для бегущих точек */
+.dots::after {
+    content: '';
+    display: inline-block;
+    animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }    /* 0 точек */
+    40% { content: '.'; }        /* 1 точка */
+    60% { content: '..'; }       /* 2 точки */
+    80%, 100% { content: '...'; }/* 3 точки */
+}
+select, button {
+    font-size: 18px;
+    padding: 10px;
+    margin: 10px;
+}
+
+#lvl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: auto auto;
+    width: 300px;
+    margin-top: 10px;
+}
+
+.lvl-cell {
+    text-align: center;
+}
+
+.level-image {
+    width: 100px;
+    height: 100px;
+    opacity: 0.2;
+    transform: scale(0.75);
+    transition: opacity 0.3s, transform 0.3s; /* Плавный переход для изменений */
+}
+
+.level-text {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    font-size: .9em;
+}
+
+
+/*ИГРА*/
+
 
 #grid {
     display: grid;
-    grid-template-columns: repeat(6, 75px);
-    grid-template-rows: repeat(6, 75px);
+    grid-template-columns: repeat(5, 75px);
+    grid-template-rows: repeat(5, 75px);
 }
 
 .cell {
-    width: 70px;
-    height: 70px;
-    background-color: green;
-    border: 1px solid #000;
-    border-radius: 3px; /* ���������� ����� ����� */
+    width: 65px;
+    height: 65px;
+    background-color: lime;
+    border: 4px solid #000;
+    border-radius: 15px; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,13 +143,16 @@ body {
     transition: border 0.2s;
 }
 .cell.active {
-    border: 3px solid red;  ������� ����� ��� �������� ������ */
+    border: 4px solid black;
 }
-.cell:hover {
-    opacity: 0.8; /* ������ ��� ��������� */
+.disabled {
+    pointer-events: none;
 }
 
-#info {
-    margin-top: 20px;
-    font-size: 24px;
-}
+
+
+
+
+
+
+
