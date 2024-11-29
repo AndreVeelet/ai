@@ -114,10 +114,10 @@ function handleCellClick(event) {
     if (back&&(cell.classList.contains('active'))){
         cell.style.border = '4px solid red';
     }
-    let control_end = 0;
+    const control_end = 0;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        if (cell.classList.contains('active')){
+        if (cell.style.background !== 'linear-gradient(to right, green, lime)'){
             control_end++;
         }
     });
