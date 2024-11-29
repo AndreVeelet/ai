@@ -1,26 +1,9 @@
 
-let isWindowActive = false; // Переменная для отслеживания состояния окна
+
 // Функция для прекращения действия по умолчанию
 document.addEventListener('touchmove', function(e) {
     if (isWindowActive) { e.preventDefault(); } // Предотвращаем прокрутку, если окно активно
 }, { passive: false });
-
-let wakeLock = null; // Переменная для хранения блокировки экрана
-
-// Функция для запроса блокировки экрана
-async function requestWakeLock() {
-    try { 
-        wakeLock = await navigator.wakeLock.request('screen');
-        setInterval(null, 5000); // Обновляем состояние каждые 5 секунд
-        window.addEventListener('unload', () => { // Освобождаем блокировку при закрытии вкладки
-            if (wakeLock) { wakeLock.release(); }
-        });
-        wakeLock.addEventListener('release', () => {  // Слушаем событие освобождения блокировки
-            wakeLock = null; // Сбрасываем переменную
-        });
-    } catch (err) { console.error(`${err.name}, ${err.message}`);
-    }
-}
 
 // Обработчик изменения состояния чекбокса
 const checkbox = document.getElementById('fullscreenCheckbox');
@@ -59,7 +42,7 @@ towindow_gameButton.addEventListener('click', () => {
     setTimeout(() => {
         overlay.style.display = 'none';
         window_game.classList.add('active'); // Показываем окно 2
-        requestWakeLock();
+        
 	    isWindowActive = true;
         startGame(); //Старт игры
     }, 1000);
