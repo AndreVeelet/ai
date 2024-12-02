@@ -117,7 +117,7 @@ function handleCellClick(event) {
     const control_end = 0;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        if (cell.style.background !== 'linear-gradient(to right, green, lime)'){
+        if (cell.dataset.green === 'false'){   //style.background !== 'linear-gradient(to right, green, lime)'){
             control_end++;
         }
     });
@@ -132,12 +132,23 @@ function handleCellClick(event) {
 }
 
 function toggleCellColor(cell) {
-    if (cell.style.background === 'linear-gradient(to right, green, lime)') {
-        
+  /*  if (cell.style.background === 'linear-gradient(to right, green, lime)') {
 	cell.style.background = 'linear-gradient(to right, grey, white)';
     } else {
         cell.style.background = 'linear-gradient(to right, green, lime)';
+    } */
+
+        cell.dataset.green = cell.dataset.green === 'true' ? 'false' : 'true';
+        
+    if (cell.dataset.green === 'true') {
+        //cell.dataset.green = false;
+        cell.style.backgroundColor = 'lime'; //cell.style.backgroundColor = 'gray';
+    } else {
+        //cell.dataset.green = true;
+        cell.style.backgroundColor = 'gray';
+
     }
+
 }
 
 // Функция для получения индексов соседних клеток
@@ -182,8 +193,10 @@ function startGame() {
         const cell = document.createElement('div');
         cell.classList.add('cell');
         cell.dataset.index = i; // Сохраняем индекс клетки
+        cell.dataset.green = 'true'; // Сохраняем цвет
+
         cell.addEventListener('click', handleCellClick);
-        cell.style.background = 'linear-gradient(to right, green, lime)';
+        cell.style.backgroundColor = 'lime';
         gridElement.appendChild(cell);
     }
 
