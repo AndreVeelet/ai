@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Grid</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(6, 100px);
+            grid-template-rows: repeat(6, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ccc;
+            user-select: none;
+            cursor: grab;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+
+        // Создание ячеек с случайным цветом
+        function createGrid() {
+            for (let i = 0; i < 36; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.draggable = true;
+                cell.style.backgroundColor = getRandomColor();
+                cell.addEventListener('dragstart', dragStart);
+                cell.addEventListener('dragover', dragOver);
+                cell.addEventListener('drop', drop);
+                grid.appendChild(cell);
+            }
+        }
+
+        // Генерация случайного цвета
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        }
+
+        let draggedCell = null;
+
+        function dragStart(event) {
+            draggedCell = event.target;
+            event.dataTransfer.setData('text/plain', '');
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            if (event.target !== draggedCell && event.target.classList.contains('cell')) {
+                const targetCell = event.target;
+                const draggedColor = draggedCell.style.backgroundColor;
+                const targetColor = targetCell.style.backgroundColor;
+
+                // Меняем цвета местами
+                draggedCell.style.backgroundColor = targetColor;
+                targetCell.style.backgroundColor = draggedColor;
+            }
+        }
+
+        createGrid();
+    </script>
+</body>
+</html>
