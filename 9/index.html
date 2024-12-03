@@ -35,6 +35,12 @@
     <div class="grid" id="grid"></div>
 
     <script>
+
+        // Функция для прекращения действия по умолчанию
+    document.addEventListener('touchmove', function(e) {
+    if (isWindowActive) { e.preventDefault(); } // Предотвращаем прокрутку, если окно активно   
+    }, { passive: false });
+
         const grid = document.getElementById('grid');
         const rows = 8;
         const cols = 7;
