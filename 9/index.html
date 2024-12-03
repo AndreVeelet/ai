@@ -13,6 +13,11 @@
             margin: 0;
             background-color: #f0f0f0;
         }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(7, 50px);
@@ -32,15 +37,22 @@
     </style>
 </head>
 <body>
-    <div class="grid" id="grid"></div>
+    <div class="container">
+        <button id="shuffleButton">Перемешать</button>
+        <p></p>
+        <div class="grid" id="grid"></div>
+    </div>
+    
 
     <script>
 
         // Функция для прекращения действия по умолчанию
    
         const grid = document.getElementById('grid');
+        const shuffleButton = document.getElementById('shuffleButton');
         const rows = 8;
         const cols = 7;
+        const initialColors = [];
 
         //
         const colors = {
@@ -62,6 +74,7 @@
                     cell.addEventListener('dragover', dragOver);
                     cell.addEventListener('drop', drop);
                     grid.appendChild(cell);
+                    initialColors.push(cell.style.backgroundColor);
                 }
             }
         }
@@ -125,6 +138,7 @@ function handleTouchStart(event) {
     function handleTouchEnd(event) {
         if (draggedCell) {
             draggedCell.style.opacity = '1';
+            checkWinCondition();
             draggedCell = null;
         }
     }
@@ -136,13 +150,40 @@ function handleTouchStart(event) {
     }
 
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('touchstart', handleTouchStart, { passive: false });
-        cell.addEventListener('touchmove', handleTouchMove, { passive: false });
+        cell.addEventListener('touchstart', handleTouchStart);   //, { passive: false });
+        cell.addEventListener('touchmove', handleTouchMove);  // , { passive: false });
         cell.addEventListener('touchend', handleTouchEnd);
     });
 
 ////
+function shuffleGrid() {
+            const cells = Array.from(document.querySelectorAll('.cell'));
 
+            // Угловые ячейки, которые нельзя перемешивать
+            const cornerIndices = [0, cols - 1, (rows - 1) * cols, rows * cols - 1];
+
+            const nonCornerCells = cells.filter((_, index) => !cornerIndices.includes(index));
+
+            // Перемешиваем только неугловые ячейки
+            for (let i = nonCornerCells.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tempColor = nonCornerCells[i].style.backgroundColor;
+                nonCornerCells[i].style.backgroundColor = nonCornerCells[j].style.backgroundColor;
+                nonCornerCells[j].style.backgroundColor = tempColor;
+            }
+        }
+
+        function checkWinCondition() {
+            const cells = Array.from(document.querySelectorAll('.cell'));
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i].style.backgroundColor !== initialColors[i]) {
+                    return;
+                }
+            }
+            alert('Победа!');
+        }
+
+        shuffleButton.addEventListener('click', shuffleGrid);
 // Запускаем игру при загрузке страницы
 
         createGrid(); //
