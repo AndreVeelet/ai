@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,19 +15,19 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(6, 100px);
-            grid-template-rows: repeat(6, 100px);
-            gap: 5px;
+            grid-template-columns: repeat(7, 50px);
+            grid-template-rows: repeat(8, 70px);
+            gap: 0px;
         }
         .cell {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 70px;
             display: flex;
             justify-content: center;
             align-items: center;
             user-select: none;
             cursor: grab;
-            border: 1px solid #000;
+            border: 0px solid #000;
         }
     </style>
 </head>
@@ -36,15 +36,15 @@
 
     <script>
         const grid = document.getElementById('grid');
-        const rows = 6;
-        const cols = 6;
+        const rows = 8;
+        const cols = 7;
 
-        // Угловые цвета (можно поменять на любые)
+        //
         const colors = {
-            topLeft: [255, 0, 0],      // Красный
-            topRight: [0, 255, 0],     // Зеленый
-            bottomLeft: [0, 0, 255],   // Синий
-            bottomRight: [255, 255, 0] // Желтый
+            topLeft: [255, 0, 200],      
+            topRight: [255, 100, 0],     
+            bottomLeft: [0, 0, 200],  
+            bottomRight: [0, 255, 0] 
         };
 
         function createGrid() {
@@ -63,7 +63,7 @@
             }
         }
 
-        // Интерполяция цвета на основе позиции ячейки
+        // 
         function interpolateColor(row, col) {
             const rowRatio = row / (rows - 1);
             const colRatio = col / (cols - 1);
@@ -74,7 +74,7 @@
             return interpolate(topColor, bottomColor, rowRatio);
         }
 
-        // Линейная интерполяция между двумя цветами
+        //  
         function interpolate(color1, color2, ratio) {
             return color1.map((val, index) => Math.round(val + (color2[index] - val) * ratio));
         }
@@ -97,13 +97,52 @@
                 const draggedColor = draggedCell.style.backgroundColor;
                 const targetColor = targetCell.style.backgroundColor;
 
-                // Меняем цвета местами
+                // РњРµРЅСЏРµРј С†РІРµС‚Р° РјРµСЃС‚Р°РјРё
                 draggedCell.style.backgroundColor = targetColor;
                 targetCell.style.backgroundColor = draggedColor;
             }
         }
+////
 
-        createGrid();
+function handleTouchStart(event) {
+        draggedCell = event.target;
+        event.target.style.opacity = '0.5';
+    }
+
+    function handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+        if (element && element.classList.contains('cell') && element !== draggedCell) {
+            swapColors(draggedCell, element);
+        }
+    }
+
+    function handleTouchEnd(event) {
+        if (draggedCell) {
+            draggedCell.style.opacity = '1';
+            draggedCell = null;
+        }
+    }
+
+    function swapColors(cell1, cell2) {
+        const tempColor = cell1.style.backgroundColor;
+        cell1.style.backgroundColor = cell2.style.backgroundColor;
+        cell2.style.backgroundColor = tempColor;
+    }
+
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.addEventListener('touchstart', handleTouchStart);
+        cell.addEventListener('touchmove', handleTouchMove);
+        cell.addEventListener('touchend', handleTouchEnd);
+    });
+
+////
+
+// Р—Р°РїСѓСЃРєР°РµРј РёРіСЂСѓ РїСЂРё Р·Р°РіСЂСѓР·РєРµ СЃС‚СЂР°РЅРёС†С‹
+
+        createGrid(); //
     </script>
 </body>
 </html>
