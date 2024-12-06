@@ -70,6 +70,7 @@
                     cell.draggable = true;
                     const color = interpolateColor(row, col);
                     cell.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+                    cell.textContent = row*cols + col;
                     cell.addEventListener('dragstart', dragStart);
                     cell.addEventListener('dragover', dragOver);
                     cell.addEventListener('drop', drop);
@@ -112,10 +113,17 @@
                 const targetCell = event.target;
                 const draggedColor = draggedCell.style.backgroundColor;
                 const targetColor = targetCell.style.backgroundColor;
+                const draggedText = draggedCell.textContent;
+                const targetText = targetCell.textContent;
 
                 // Меняем цвета местами
                 draggedCell.style.backgroundColor = targetColor;
                 targetCell.style.backgroundColor = draggedColor;
+
+                draggedCell.textContent = targetText;
+                targetCell.textContent = draggedText;
+
+                checkWinCondition();
             }
         }
 ////
@@ -132,13 +140,15 @@ function handleTouchStart(event) {
 
         if (element && element.classList.contains('cell') && element !== draggedCell) {
             swapColors(draggedCell, element);
+            
+            
         }
     }
 
     function handleTouchEnd(event) {
         if (draggedCell) {
             draggedCell.style.opacity = '1';
-            checkWinCondition();
+            
             draggedCell = null;
         }
     }
@@ -168,6 +178,10 @@ function shuffleGrid() {
             for (let i = nonCornerCells.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 const tempColor = nonCornerCells[i].style.backgroundColor;
+                const tempText = nonCornerCells[i].textContent;
+
+                nonCornerCells[i].textContent = nonCornerCells[j].textContent;
+                nonCornerCells[j].textContent = tempText;
                 nonCornerCells[i].style.backgroundColor = nonCornerCells[j].style.backgroundColor;
                 nonCornerCells[j].style.backgroundColor = tempColor;
             }
@@ -175,10 +189,13 @@ function shuffleGrid() {
 
         function checkWinCondition() {
             const cells = Array.from(document.querySelectorAll('.cell'));
+           // alert('test');
             for (let i = 0; i < cells.length; i++) {
                 if (cells[i].style.backgroundColor !== initialColors[i]) {
+                    
                     return;
                 }
+               
             }
             alert('Победа!');
         }
